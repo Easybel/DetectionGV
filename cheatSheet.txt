@@ -1,0 +1,13 @@
+# How to Matlab
+
+## Structs
+x searching for a word ("CDS") within a field (.type1) of a struct "bed":
+  onlyCDS = cellfun(@(x) strcmp('CDS',x),{bed(:).type1}); 
+  
+x adding the array "newArray" in a new field (.new) to an existing struct "exstruct":
+  tmp = struct("addMe", num2cell(newArray));
+  [exstruct.new] = deal(tmp.addMe); % tmp.addMe needs to be in format ans = ..., ans = ..., ans = ...
+  
+  
+  
+  
