@@ -1,6 +1,6 @@
 
 ---------------------------------------------------
-## TheMaster Plan
+## Overview of the scripts 
 .... What we have to do
 - **A0_VariantFiltering**
 - **A1_SNP2CNP** 
