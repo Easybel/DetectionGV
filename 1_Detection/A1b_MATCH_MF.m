@@ -1,4 +1,4 @@
-function match = MATCH_MF(ml,snp)
+function match = MATCH(ml,snp)
 %Looks for entries in masterlist "ml" that are also present in the IndvMutList of the replicate "snp".
 %
 %ml and snp must be structures with the fields pos (the position of the
