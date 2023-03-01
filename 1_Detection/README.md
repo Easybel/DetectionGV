@@ -1,8 +1,9 @@
 
 ---------------------------------------------------
 ## Overview of the scripts 
-.... What we have to do
-- **A0_VariantFiltering**
+In this folder, the scripts are provided with which different genetic variants can be detected. All scripts are implemented in MATLAB. The numbers of the scripts indicate the order in which they should be run. Here, we give a brief overview.
+
+**A0_VariantFiltering**
 - **A1_SNP2CNP** 
 - **A2_Lists2Genes** (prior A2_CNP2Genes and A4_Regions2Genes)
   - here now you can also upload deldups or a randomn txt file 
