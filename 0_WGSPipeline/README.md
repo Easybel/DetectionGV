@@ -1,2 +1,0 @@
-# WGSPipeline
-overview
