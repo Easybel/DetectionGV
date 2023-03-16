@@ -4,23 +4,16 @@
 In this folder, the scripts are provided with which different genetic variants can be detected. All scripts are implemented in MATLAB. The numbers of the scripts indicate the order in which they should be run. Here, we give a brief overview.
 
 **A0_VariantFiltering**
-- input: 
-- output:
-- The script takes the input and filteres the 
+- This script takes the list of called variants and filters by quality and read depth. This script is also used to filter the masterlist, which contains all SNPs detected between a recipient and donor species.
 
 **A0c_AccessoryGenome**
-- input: 
-- output:
-- The script takes the input and filteres the 
+- Here, we detect the accessory genome parts of one genome compared to a second genome.
 
 **A0d_Multimapper**
-- input: 
-- output:
-- The script takes the input and filteres the 
+- This script allows us to find the regions on a genome to which multimapping reads align.
 
 **A1_SNP2CNP** 
-- input
-- output
+- With the filtered variant list and the masterlist, we detect the replacements of donor segments into the recipient. Here, we exclude accessory genome and multimapping regions.
 
 **A2_Lists2Genes** (prior A2_CNP2Genes and A4_Regions2Genes)
 - input
