@@ -7,6 +7,17 @@ In this folder, the scripts are provided with which different genetic variants c
 - input: 
 - output:
 - The script takes the input and filteres the 
+
+**A0c_AccessoryGenome**
+- input: 
+- output:
+- The script takes the input and filteres the 
+
+**A0d_Multimapper**
+- input: 
+- output:
+- The script takes the input and filteres the 
+
 **A1_SNP2CNP** 
 - input
 - output
@@ -17,7 +28,8 @@ In this folder, the scripts are provided with which different genetic variants c
   - here now you can also upload deldups or a randomn txt file 
   - you can upload a txt file with BSU names of genes that you are interested in to search for (if you dont want to go through the whole bed file with all 4422 genes ..)
   - you can also exclude the accessory genome now
-**A5_Cov2DelDup** 
+ 
+**A3_Cov2DelDup** 
 - input
 - output
 
