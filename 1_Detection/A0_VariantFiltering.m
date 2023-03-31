@@ -1,77 +1,92 @@
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 % %                     VariantFiltering.m                              % %
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-% input: _bcfcall.vcf
-% output: formerly: SNPSummary, when Indels or on then MutSummary
+
+% This script takes the variant list and filters it according to
+%      user-specified parameters. These include:
+% --- minTotalCount & totalCountsMode 
+% --- minimum phred quality score
+% --- unambigious various with a cutoff at a precentage? 
+% --- filter or keep indels 
+% --- LAFilter: look-ahead filter, that only keeps those variants that are
+%     also present in the same sample, sequenced at a later timepoint in 
+%     the lineage
+
+% input: "_bcfcall.vcf", usually an output of bcftools call from the 
+%         whole genome sequencing pipeline
+% output: formerly: SNPSummary or MutSummary (when indels are included)
 
 clearvars
 
              % %                                  % %
             % % %   Specify your samples ...     % % %
              % %                                  % %
-%path = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper_BigData/Hybrids2Bs166/bcfcalls/";    % Where are the unfiltered variant lists 
-path = "/media/isabel/IsaLinux/Doktorarbeit_Mai2022/1_kleinesPaper_BigData/Hybrids2Bs166/bcfcalls/";
-%(*_bcfcall.vcf) and where do you 
-                                % want to save the SNPSummary?
-filepath = path;
-filesuffix = "_2NCe_bcfmp_bcfcall.vcf";
 
-savepath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/DNASeq/2_MutSummaries/"; % + "Filtered\";
+% path to unfiltered variant lists              
+Inpath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper_BigData/Hybrids2Bs166/bcfcalls/";    
+filesuffix = "_bcfcall.vcf";
 
-% % % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- % % %
-
-sampleType = "customized";    % Using the standard sample naming (under our 
-                            % convention), choose sampleType = "standard";
-                            % not standard naming but cycle included in the
-                            % name can use "standard" as well;
-                            % To filter other files (cycle not in name), 
-                            % set sampleType = "customized"; Note, that for 
-                            % these files LAfiltering is not possible !
+% Do you want to save the SNPSummary to the savepath ?
+saveSNPSummary = true;
+% save output in
+Outpath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/DNASeq/2_MutSummaries/";
 
 % % % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- % % %
-% % % --- --- --- --- ---  sampleType == "standard" - --- --- --- --- --- % % %
+
+sampleType = "LAFilter";  % sampleType = standard
+                            % the user specifies each sample name individually
+                            % --- note that here, the LAFilter is not available
+
+                            % sampleType = LAFilter
+                            % for this option, there are files for samples
+                            % sequenced at different time points!
+
+
+if strcmp(sampleType, "standard")
+
+% % % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- % % %
+% % % In the "standard" - sampleType, the entire sample names need to --- % % %
+% % % be fill in the sampleNames string array, leave the rest untouched - % % % 
+% % % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- % % %
+    
+    sampleNames =  ["Wns0120" "Wns0420" "Wns0520" "Wns0620" "Wns0720" "Wns0820"];
+
+    % Fixed variables
+    corrCycles{1} = [0];
+    sampleNo{1} = sampleNames; evolExp = "";      
+    
+
+elseif strcmp(sampleType, "LAFilter")
+
+% % % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- % % %
 % % % --- --- In this sampleType, the naming of a sample follows: --- --- % % %
 % % % Prefix(evolExp) + sampleNo + corrCycle + sampleSuffix + filesuffix  % % %
 % % % e.g. Wns        +    01    +    10     +   _2Donor    + _bcfcall.vcf% % %
 % % % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- % % %
+% % % LAFilter: - --- --- --- --- --- --- --- --- --- --- --- --- --- --- % % %
+% % % automatically, samples of the following form:-- --- --- --- --- --- % % %
+% % % ---  sampleNo{1} = string([9 10]);       --- --- --- --- --- --- --- % % %
+% % % ---  corrCycles{1} = [10 20];           --- --- --- --- --- --- --- % % %
+% % % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- % % %
+% % % --- are filtered with the look-ahead filter (LAFilter), which only- % % %
+% % %     keeps those variants in the earlier timepoint, that were also - % % %
+% % %     found in the later one!             --- --- --- --- --- --- --- % % %
+% % % The algorithm will run over all sampleNo and all cycles individually % % %
 
-if strcmp(sampleType, "standard")
     % % evolExp == samplePrefix
-    evolExp = "";      
+    evolExp = "Vns0";      
 
     % Define sample number sampleNo{x} and the corresponding cycles corrCycles{x}:
-    sampleNo{1} = string([1:10]);
-    corrCycles{1} = [1];
-
+    sampleNo{1} = string([9]);
+    corrCycles{1} = [10 20.5];
+    
+    % you can add more sets 
 %     sampleNo{2} = ["02"];
 %     corrCycles{2} = [10 20.5];
 % 
-%     sampleNo{3} = ["03", "04"];
-%     corrCycles{3} = [10 20];
-% 
-%     sampleNo{4} = ["05", "06", "07", "08"];
-%     corrCycles{4} = [10 20.5];
 
     sampleSuffix = "";  % You can specify a sampleSuffix if necessary, default:
                         % sampleSuffix = "";
-    %sampleSuffix = "_2Donor";
-    
-% % % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- % % %
-% % % --- --- --- --- --- sampleType == "customized"  --- --- --- --- --- % % %
-% % % In the "customized" - sampleType, the entire sample names need to - % % %
-% % % be fill in the sampleNames string array, leave the rest untouched - % % % 
-% % % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- % % %
-
-elseif strcmp(sampleType, "customized")
-    
-    %sampleNames = ["LibBvalwS2d12_"] + ["6","14","16","30","38","39","62","85","86","94"];
-    %sampleNames = ["LibBvalwS3d5_"] + ["3","11","27","29","42","55","56","59","61","64"];
-    sampleNames = ["Wns0120" "Wns0420" "Wns0520" "Wns0620" "Wns0720" "Wns0820"];
-    %sampleNames = "W" + ["401" "402" "404" "405" "406" "407" "408"];
-    % sampleNames =  ["Ws0" + string([1:9]) + "20" "Ws" + string([10:15]) + "20"];
-    % Fixed variables
-    corrCycles{1} = [0];
-    sampleNo{1} = sampleNames; evolExp = "";      
     
 else
     error("Please, clarify you sampleType!");
@@ -93,9 +108,8 @@ IndelKeep = "ON";    % if not "ON", the indels will be excluded from the output
 
 % % % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- % % %
 
-% Do you want to save the SNPSummary to the savepath ?
-saveSNPSummary = true;
 
+%%
 % % % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- % % %
 
   %                                                                  %
@@ -123,15 +137,15 @@ for sampleCount = 1 : length(allSamples)
     % What cycles do we provide for this sample ?
     cycles = allCycles{sampleCount};
 
-    if strcmp(sampleType, "standard")
-        fileName     = cellstr(strcat(filepath, sampleCurr, string(num2str(cycles','%02.f')), sampleSuffix, filesuffix))';
-        fileName_alt = cellstr(strcat(filepath, sampleCurr, string(num2str(cycles','%02.1f')), sampleSuffix, filesuffix))';
+    if strcmp(sampleType, "LAFilter")
+        fileName     = cellstr(strcat(Inpath, sampleCurr, string(num2str(cycles','%02.f')), sampleSuffix, filesuffix))';
+        fileName_alt = cellstr(strcat(Inpath, sampleCurr, string(num2str(cycles','%02.1f')), sampleSuffix, filesuffix))';
         mask_halfCycles = round(cycles) ~= cycles;
         if any(mask_halfCycles)
             fileName{mask_halfCycles} = fileName_alt{mask_halfCycles};
         end
-    elseif strcmp(sampleType, "customized")
-        fileName = cellstr(strcat(filepath, sampleCurr, filesuffix))';
+    elseif strcmp(sampleType, "standard")
+        fileName = cellstr(strcat(Inpath, sampleCurr, filesuffix))';
     end
     
     FilterSummary = struct(...
@@ -201,19 +215,19 @@ for sampleCount = 1 : length(allSamples)
         %% Creating filters ...
         fprintf("\tCreate filter...\n");
 
-        filterIndels = ~contains({snp.info},"INDEL");
+        maskIndels = contains({snp.info},"INDEL");
         
         if strcmp(totalCountsMode, 'AD')
-            filterTotalCounts = totalCounts >= minTotalCount;
+            maskKeepTotalCounts = totalCounts >= minTotalCount;
         elseif strcmp(totalCountsMode, 'DP')
-            filterTotalCounts = DP >= minTotalCount;
+            maskKeepTotalCounts = DP >= minTotalCount;
         else
             error("Your total count filtering fails! Please set your totalCountsMode to AD or DP.");
         end
         
-        filterQual = [snp.qual]' >= minQual; 
+        maskKeepQual = [snp.qual]' >= minQual; 
 
-        filterUnambi = altFrequency >= unambiFreq / 100; 
+        maskKeepUnambi = altFrequency >= unambiFreq / 100; 
 
         if  cycleBackCounter > 1
             LAfilt = true;
@@ -229,34 +243,34 @@ for sampleCount = 1 : length(allSamples)
             
             % If a variant is ambigious but(!) unambigious in the
             % following cycle(1.+2.+3.)(-> "Look ahead"), it will be kept:
-            filterLookAhead = ~filterUnambi & maskPos & maskAlt & maskAmbiCy;
+            maskKeepLookAhead = ~maskKeepUnambi & maskPos & maskAlt & maskAmbiCy;
             
             % Now combining the ambigiousity filters:
             % All snps that are unambigious or ! ambigious but unambigious 
             % in the following time step! will be kept:
-            filterComb = filterUnambi | filterLookAhead; 
+            maskKeepComb = maskKeepUnambi | maskKeepLookAhead; 
             
-            filterNumbers = filterTotalCounts & filterQual & filterComb;
+            filterNumbers = maskKeepTotalCounts & maskKeepQual & maskKeepComb;
 
         else  % only for cycleBackCounter = 1 , so the last time step 
             LAfilt = false; % no LookAheadFiltering !
-            filterNumbers = filterTotalCounts & filterQual & filterUnambi; 
-            filterLookAhead = zeros(length(filterNumbers), 1);            
+            filterNumbers = maskKeepTotalCounts & maskKeepQual & maskKeepUnambi; 
+            maskKeepLookAhead = zeros(length(filterNumbers), 1);            
         end
 
         if IndelKeep == "ON"
             filterAll =  filterNumbers;
         else
-            filterAll = filterIndels' & filterNumbers;
+            filterAll = ~maskIndels' & filterNumbers;
         end
         %% Write FilterSummary 
 
         % Write unfiltered data in FilterSummary
         FilterSummary(end - cycleBackCounter + 1).unfiltered = ...
             struct("pos",{snp.pos}', "DP", num2cell(DP), "ref",{snp.ref}', "alt",{snp.alt}', ...
-            "varcounts",countArrs,"varfreq", num2cell(altFrequency), "QUAL", {snp.qual}', "filterIndels",num2cell(filterIndels)', "filterQual", num2cell(filterQual), ...
-            "filterDP",num2cell(filterTotalCounts), "filterUnambi",num2cell(filterUnambi), ...
-            "filterLA", num2cell(filterLookAhead),  "filterAll",num2cell(filterAll)); 
+            "varcounts",countArrs,"varfreq", num2cell(altFrequency), "QUAL", {snp.qual}', "filterIndels",num2cell(maskIndels)', "filterQual", num2cell(maskKeepQual), ...
+            "filterDP",num2cell(maskKeepTotalCounts), "filterUnambi",num2cell(maskKeepUnambi), ...
+            "filterLA", num2cell(maskKeepLookAhead),  "filterAll",num2cell(filterAll)); 
 
         % Filter data
         snpFilt = snp(filterAll);
@@ -273,7 +287,7 @@ for sampleCount = 1 : length(allSamples)
         
         FilterSummary(end-cycleBackCounter+1).LAfiltered = LAfilt;
         
-        clear countArrs altAlleleChar altFrequency filterIndels filterTotalCounts ...
+        clear countArrs altAlleleChar altFrequency maskIndels maskKeepTotalCounts ...
             filterCoverage filterCycleOcc filterAll snp;
     end
     clear c;
@@ -288,9 +302,9 @@ for sampleCount = 1 : length(allSamples)
         else 
             SNPSummary(allCount).IndvMutList = [];
         end
-        if strcmp(sampleType, "standard")
+        if strcmp(sampleType, "LAFilter")
             SNPSummary(allCount).Sample = sampleCurr+num2str(cycles(i));
-        elseif strcmp(sampleType, "customized")
+        elseif strcmp(sampleType, "standard")
             SNPSummary(allCount).Sample = sampleCurr;
         end
         
@@ -310,12 +324,12 @@ else
 end
 
 if saveSNPSummary
-    fprintf("Save " + outputName + " to '%s' ...\n", savepath + datestr(now, 'yyyymmdd') + '_' + evolExp + outputName + ".mat");
+    fprintf("Save " + outputName + " to '%s' ...\n", Outpath + datestr(now, 'yyyymmdd') + '_' + evolExp + outputName + ".mat");
     
-    if strcmp(sampleType, "standard")
-        save(savepath + datestr(now, 'yyyymmdd') + '_' + evolExp + outputName + ".mat", 'SNPSummary')
-    elseif strcmp(sampleType, "customized")
-        save(savepath + datestr(now, 'yyyymmdd') + '_' + outputName + ".mat", 'SNPSummary')
+    if strcmp(sampleType, "LAFilter")
+        save(Outpath + datestr(now, 'yyyymmdd') + '_' + evolExp + outputName + ".mat", 'SNPSummary')
+    elseif strcmp(sampleType, "standard")
+        save(Outpath + datestr(now, 'yyyymmdd') + '_' + outputName + ".mat", 'SNPSummary')
     end
 end
 
