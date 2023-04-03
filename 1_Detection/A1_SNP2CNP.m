@@ -3,11 +3,46 @@
         % % % %    SNP2CNP created by MonaIsa     % % % %
          % % %                                     % % %
           % %                                       % % 
-clearvars
 
-                     %                      %
-                    % %    Define input    % %
-                     %                      %
+% This script takes the filtered variants and finds the replacements by 
+% detecting clusters of donor alleles. 
+
+% input: 
+% -- SNPSummary/ MutSummary (which is output from A0_VariantFiltering.m)
+% -- masterlist containing SNPwise differences between recipient and donor
+%    (obtained with A0_VariantFiltering.m)
+% -- accessory genome of recipient with respect to donor 
+%    (obtained with A0c_AccessoryGenome.m)
+% -- list with multimapper regions (obtained with A0d_Multimapper.m)
+% -- list of SNP artefacts that are found with the A0_VariantFiltering.m
+%    script together with the recipient lab strains aligned to its
+%    own reference
+
+% output: CNPSummarya .mat
+% -->>> structure containing all detected replacements (Adist, Mdist, Cdist); 
+%       de novo mutations, de novo indels; etc.
+% C ->>> this field contains cluster start and end positions in C(1,:), C(2,:)
+% --->>> number of total masterlist SNPs in cluster region C(3,:)
+% --->>> number of undetected mlSNPs in cluster C(4,:)
+%
+% Calculating cluster lengths (distances between cluster start and end)
+% Cdist: minimal length, between first and last detected mlSNP
+% Mdist: maximal length, including the identical regions befor and after  
+% ------- from next mlSNP that is undetected before and after cluster
+% Adist: average(a))
+% ------- average between last undetected and first detected SNP in
+%         cluster, at start and end
+%
+% identity, mlSNPs in cluster with Adist
+% ident{m} = 1 - (# mlSNPs) / Adist
+%
+% transferred core genome per sample: evaluated with Adist
+
+clearvars
+%%
+                    %                      %
+                   % %    Define input    % %
+                    %                      %
 
 
 donor = "W23"; % "W23", "Bval", "Batro", "Geo", "Bmoj"
@@ -37,7 +72,7 @@ else
     error("Something went wrong with your donor declaration.. Is your donor really %s?", donor);
 end
 
-
+%define the multimapper list and the list of SNP artefacts
 mmlist    = pathLists + "Bs166NCe_mm.txt";
 artefacts = pathLists + "Bs166NCe_ArteSNPs.vcf";
 
@@ -46,25 +81,23 @@ recipsize = 4215607;
 %
 % you have to pick one type and cant mix them!
 SNPSource = "MutSummary";     % Where do your variant lists come from? 
-                              % "SNPSummary" (new) / "IndvMutLists" (old)
-                              % Default: "SNPSummary" 
-                              % MutSummary: also includes Indels 
-     
-% You just need to specify samplenames if you use "IndvMutLists", otherwise
-% you can leave it empty to choose ALL:
+                              % "SNPSummary" (default)
+                              % "MutSummary" includes Indels 
+                              % "IndvMutLists" (is a .txt file)
+                             
+% You just need to specify samplenames if you use "IndvMutLists"
+% otherwise leave empty to choose ALL:
 samplenames = [];
-% samplenames = [];
 
 % Path of the SNPSummary/ies or IndvMutLists of the evolved strains:
-% SNPPath = "H:\Vns_onBs166NCe\";    
-% SNPPath = "H:\Wns_onW23wt\";
 SNPPath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/DNASeq/2_MutSummaries/";
 
-saveCNPSummary = "ON"; % Turn "ON" to save the CNPSummary !
+% Turn "ON" to save the CNPSummary !
+saveCNPSummary = "ON"; 
 
 if any(strcmp(SNPSource, ["SNPSummary", "MutSummary"]))
     % You can give more than {1} SNPSummary as input
-    SNPName{1} = "20230104_WnsOLD_MutSummary.mat";
+    SNPName{1} = "20230331_Wns_20-25_MutSummary.mat";
 
 
 elseif strcmp(SNPSource, "IndvMutLists")
@@ -76,15 +109,14 @@ else
     error("Please check your SNPSource! It needs to be 'SNPSummary', 'MutSummary' or 'IndvMutLists'.");
 end
 
-%
-    
 % Where do you want to save the output -- CNPSummary ?
 savepath = SNPPath;
 
 % Define cluster finding parameters
-cms = 5;    % cms - 1: number of allowed missing snps %!
+cms = 5;    % cms - 1: number of allowed missing snps!!
+            % for cms and more, the cluster ends
 
-
+%%
   %                                                                  %
  % %                                                                % %
 % % %   Now, just lean back and let me do the rest for you ...     % % %
@@ -119,11 +151,11 @@ elseif strcmp(SNPSource, "IndvMutLists")
 end
   
 % Preallocating your variables
-indel  = cell(numel(samplenames),1);       % this is only needed for MutSummary that contaons indels
-denovo = cell(numel(samplenames),1);     % SNPs that do not fit the masterlist
+indel  = cell(numel(samplenames),1);     % this is only needed for MutSummary that contains indels
+denovo = cell(numel(samplenames),1);     % SNPs that do not fit the masterlist and are no artefacts
 C      = cell(numel(samplenames),1);     % detected clusters
-SPI    = cell(numel(samplenames),1);     % SNPs that fit the masterlist but not in cluster (You need at least two mlSNPs to have a cluster)
-Cdist  = cell(length(C),1);              % minimum length of the detected cluster (from first snp to the last)
+SPI    = cell(numel(samplenames),1);     % SNPs that fit the masterlist but are not in cluster (You need at least two mlSNPs to have a cluster)
+Cdist  = cell(length(C),1);              % minimum length of the detected cluster (from first donor allele SNP to the last)
 Mdist  = cell(length(C),1);              % maximum length (including the distance to the next mlsnp or to the start of the next accessory part)
 Adist  = cell(length(C),1);              % average length ((maxlen-minlen)/2+minlen)
 ident  = cell(length(C),1);
@@ -139,55 +171,41 @@ ml.pos = imp{1};
 ml.atcg = imp{3};
 clear imp
 
-% Load recipient/donor specific accessory genome (for Bsub168 with respect
-% to W23 from Zeigler et al.) in acc where the start positions of the 
-% accessory genome is written into acc.start and the end position into
-% acc.edge (acc is a struct)
+% Load recipient/donor specific accessory genome in acc (as a structure)
 fid = fopen(accgenome);
-% for Zeigler use the following three lines
-% imp = textscan(fid,'%s %f %f %f %s', 'delimiter', '\t');
-% acc.start = imp{2};
-% acc.edge = imp{3};
-% otherwise, use:
 imp = textscan(fid, '%f %f %f', 'delimiter', '\t');
 acc.start = imp{1};
 acc.edge = imp{2};
 fclose(fid);
 clear imp
 
-% Load the multi mapper list 
-if ~isempty(mmlist)
+% Load the multimapper list 
 fid = fopen(mmlist);
 imp = textscan(fid, '%f %f %f');
 mm.start = imp{1};
 mm.edge = imp{2};
 clear imp;
-end
 
 % Merge with acc.list for later use:
-acc.start = vertcat(acc.start, mm.start);
-acc.edge = vertcat(acc.edge, mm.edge);
+exclRegion.start = vertcat(acc.start, mm.start);
+exclRegion.edge = vertcat(acc.edge, mm.edge);
 
-% Create acc_mask
-acc_mask = [];
-for i = 1 : length(acc.start)
-    acc_mask = [acc_mask acc.start(i):acc.edge(i)];
+% Create excl_mask that will exclude all acc. and mm regions
+excl_mask = [];
+for i = 1 : length(exclRegion.start)
+    excl_mask = [excl_mask exclRegion.start(i):exclRegion.edge(i)];
 end 
-acc_mask = unique(sort(acc_mask));
+excl_mask = unique(sort(excl_mask));
 
-% Read in artefacts.vcf (Ancestor reads on dictionary)
-if ~isempty(artefacts)
+% Read in artefacts.vcf (recipient reads aligned to its own dictionary)
 fid = fopen(artefacts);
 imp = textscan(fid, '%s %f %s %s %s %f %s %s %s %s', 'HeaderLines', 33);
 artefact.pos = imp{2};
 artefact.alt = imp{5};
 fclose(fid);
-clear imp;
-end 
+clear imp; 
 
-%
-% This loop goes through all samples in samplenames and ends at the end of the script
-%
+%% This loop goes through all samples in samplenames
 
 for m = 1:numel(samplenames)
     
@@ -204,9 +222,9 @@ elseif length(nonzeros(findSample)) > 1
     findSample = min(idx);
 end
 
-snp.atcg = allSNPs(findSample).IndvMutList(:,3);
-snp.ref = allSNPs(findSample).IndvMutList(:,2);
 snp.pos = str2double(allSNPs(findSample).IndvMutList(:,1));
+snp.ref = allSNPs(findSample).IndvMutList(:,2);
+snp.atcg = allSNPs(findSample).IndvMutList(:,3);
 
 % remove the artefacts 
 for i = 1 : length(artefact.pos)
@@ -222,14 +240,11 @@ if isempty(snp.pos)
 end
 
 % 
-%
 % find matching snps and masterlist snps!!
 %
-% first exclude all the indels and write them into indel list (we don't want
-%                to search clusters based on indels)
-%
-% Create list of indels 
-%
+% first exclude all the indels and write them into indel list for later use
+% (we don't want to search clusters based on indels)
+
 indel_mask        = cellfun(@(x) numel(x),snp.ref)>1 | cellfun(@(x) numel(x),snp.atcg)>1;
 if any(indel_mask)
     indel{m}.pos(1,:) = snp.pos(indel_mask)';
@@ -247,16 +262,25 @@ if isempty(snp.pos)
     continue
 end
 
-% the next four lines equal new match function (MATCH_MF)
-[match_pos, match_posidx] = ismember(ml.pos, snp.pos);        % With positions are on both lists ? match_pos is a mask (logicals) for the masterlist, match_posidx gives the index on the snplist of the replicate
-match_nt = strcmp(ml.atcg(match_pos), snp.atcg(nonzeros(match_posidx)));    % Are the detected alternate alleles the same as the expected ? match_nt gives a mask for the 
+% % % % % % % % % % 
+% % % % % % % % % % 
+
+% Match function (MATCH_MF): which positions are on both lists? 
+% -- match_pos is a mask (logicals) for the masterlist
+% -- match_posidx gives the index on the snplist of the replicate
+
+[match_pos, match_posidx] = ismember(ml.pos, snp.pos);    
+
+% Are the detected alternate alleles the same as the expected?
+match_nt = strcmp(ml.atcg(match_pos), snp.atcg(nonzeros(match_posidx)));    
 
 paren = @(x, varargin) x(varargin{:});      % definition of an anonymous function
 match = paren(ml.pos(match_pos), match_nt); % Match contains the positions on the reference genome where mlSNP was detected
 
 match_mask = ismember(ml.pos, match);       % creates a masterlist mask with detected mlSNPs
 
-numberofmlsnps(m)=length(nonzeros(match_mask));
+% % % % % % % % % % 
+% % % % % % % % % % 
 
 %
 % Create list of denovo mutations 
@@ -266,8 +290,6 @@ denovo{m}.pos(2,:) = 0;
 denovo{m}.ref = snp.ref(~ismember(snp.pos, match))';
 denovo{m}.var = snp.atcg(~ismember(snp.pos, match))';
 %
-% 
-%
     
 if isempty(match)
     continue
@@ -276,13 +298,13 @@ end
 %
 % Finding Cluster
 %  
-
-% Finding the start of the clusters
-% For this, the ml mask ($match_mask) is shifted $cms-times to the right and
-% added to the non shifted mask, $sta. For every start of a cluster (a detected
-% masterlist snp after $cms not detected snps), $stat contains a 0 followed
-% by a 1. By now dividing sta non shifted through sta shifted one to the left, sta2,
-% every starting position is INF. All other positions are an INT or NaN
+% Finding the start of the clusters:
+% For this, the masterlist mask ($match_mask) is shifted $cms-times to the right and
+% added to the non shifted mask, $sta, every time. For every start of a cluster (a detected
+% masterlist SNP after $cms of undetected SNPs), $stat contains a 0 followed
+% by a 1. Then, $sta is divided by $sta shifted by 1 to the right ($sta2)
+% sucht that every start position with respect to the masterlist is INF. 
+% All other positions are an INT or NaN
 
 clear sta sta2 start
 sta = match_mask(1:end)'; 
@@ -292,10 +314,10 @@ end
 sta2 = sta(1:end)./[sta(end:end) sta(1:end-1)];
 start = ml.pos(isinf(sta2));
 
-% Finding the ends of the clusters (here: edge, because end is not a valid
-% variable name); The end of the cluster is found the same way as start, just 
-% shifting the mask to the left and adding (ed) and then dividing ed through 
-% the one to the right shifted ed, ed2. edge gives the end positions of clusters
+% Finding the ends of the clusters(edge):
+% The end of the cluster is found the same way as the start, just that the 
+% mask is shifted to the left and summed up ($ed).Then, $ed is divided by $
+% ed2 and the end positions of clusters are saved in $edge
 
 clear ed ed2 edge
 ed = match_mask(1:end)';
@@ -319,8 +341,8 @@ if edge(1) < start(1)
     disp(['Your replicate ', samplenames{m}, ' has an ORI crossing cluster, dude!']);
 end
 
-% All Cluster with length 1 are shifted to SPI, longer clusters remain
-% clusters
+% All clusters with length 1 are counted as SPIs
+% -- longer clusters are kept 
 SPI_mask = ismember(start, edge);
 SPI{m,1} = start(SPI_mask);
 start = start(~SPI_mask);
@@ -334,39 +356,39 @@ end
 % Create a clustermask with all positions within a cluster now, you will
 % need it for the exclusion of the accessory parts and to find if denovos
 % are within clusters or outside
-clustermask = [];
+clusterPos = [];
 for i = 1 : length(start)
-    clustermask = [clustermask start(i):edge(i)];
+    clusterPos = [clusterPos start(i):edge(i)];
 end 
 
-% Compare with accessory genome (and multi mapper regions) and cut out
-% overlapping positions
-acc_filter = ~ismember(clustermask, acc_mask);
-clustermask_filt = clustermask(acc_filter);
-clear clustermask acc_filt
+% From the clusters, multimapping regions and accessory parts are excluded
+% and cut out here:
+excl_filter = ~ismember(clusterPos, excl_mask);
+clusterPos_filt = clusterPos(excl_filter);
+clear clusterPos acc_filt
 
 % Are denovos in a cluster or outside ?
 if ~isempty(denovo{m})
-denovo{m}.pos(2,:) = ismember(denovo{m}.pos(1,:), clustermask_filt);
+denovo{m}.pos(2,:) = ismember(denovo{m}.pos(1,:), clusterPos_filt);
 end
 % Are indels in a cluster or outside ?
 if ~isempty(indel{m})
-indel{m}.pos(2,:) = ismember(indel{m}.pos(1,:), clustermask_filt);
+indel{m}.pos(2,:) = ismember(indel{m}.pos(1,:), clusterPos_filt);
 end
 
 % Now go back from the list of all positions in a cluster to start/end
 % position of the detected (acc.gen. and mm-regions - cleaned) cluster
 k = 1;
-start_filt(k) = clustermask_filt(1);
+start_filt(k) = clusterPos_filt(1);
 
-for i = 1 : length(clustermask_filt) - 1
-   if clustermask_filt(i+1) ~= clustermask_filt(i)+1
-       edge_filt(k) = clustermask_filt(i);
-       start_filt(k+1) = clustermask_filt(i+1);
+for i = 1 : length(clusterPos_filt) - 1
+   if clusterPos_filt(i+1) ~= clusterPos_filt(i)+1
+       edge_filt(k) = clusterPos_filt(i);
+       start_filt(k+1) = clusterPos_filt(i+1);
        k = k + 1;
    end 
 end
-edge_filt(k) = clustermask_filt(end);
+edge_filt(k) = clusterPos_filt(end);
 
 start = start_filt;
 edge = edge_filt;
@@ -376,39 +398,46 @@ clear start_filt edge_filt
 C{m}(1,:) = start';
 C{m}(2,:) = edge';
 
-% Counting mlSNPs: This method works with length of ml.pos for
-% entry greater than start/end (loop ~ 100)
-%
-
+% Count masterlist SNPs in clusters: 
+% -- all SNPs from cluster start - SNPs after cluster end
 for i = 1 : length(start)
-    % Counting number of mlsnps in a cluster
+
+    % Number of mlSNPs in cluster
     snpno(i) = length(ml.pos(ml.pos >= start(i))) - length(ml.pos(ml.pos > edge(i)));
     C{m}(3,i) = snpno(i);
-    % Counting the detected number of snps in cluster (matching snps in a cluster) --> missing snps in a
-    % cluster
+
+    % Number of undetected mlSNPs in cluster:
+    % total mlSNPs - detected mlSNPs in region
     snpno_det(i) = length(match(match >= start(i))) - length(match(match > edge(i)));
     C{m}(4,i) = C{m}(3,i) - snpno_det(i); % number of missing snps
     clear snpno snpno_det
     
-    % Calculating distances (minimum(c), maximum(m), average(a))
+    % Calculating cluster lengths (distances between cluster start and end)
+    % Cdist: minimal length, between first and last detected mlSNP
+    % Mdist: maximal length, including the identical regions befor and after  
+    % ------- from next mlSNP that is undetected before and after cluster
+    % Adist: average(a))
+    % ------- average between last undetected and first detected SNP in
+    %         cluster, at start and end
+
     cdist = edge(i) - start(i) + 1;
     Cdist{m}(i,1) = cdist;
 
     % Measuring cluster lengths: To calculate the maximum distance, the next mlSNP that is not in the
-    % cluster needs to be found or the next accessory part(which one of both is closer)
-    mdist_back = min(ml.pos(ml.pos > edge(i)));     % find the next mlsnp behind the cluster
+    % cluster needs to be found or the next accessory part (which one of both is closer)
+    mdist_back = min(ml.pos(ml.pos > edge(i)));         % find the next mlsnp behind the cluster
     if isempty(mdist_back); mdist_back = recipsize; end % if there is no, the maximum is the end of the genome
     
     mdist_front = max(ml.pos(ml.pos < start(i)));   % find the next mlsnp in front of the cluster
     if isempty(mdist_front); mdist_front = 0; end   % if there is no, the limit is the start of the genome
     
-    idx_back = find(edge(i) < acc.start(:,1) & mdist_back > acc.start(:,1)); % see if there is an acc part between the two snps in the back
+    idx_back = find(edge(i) < exclRegion.start(:,1) & mdist_back > exclRegion.start(:,1)); % see if there is an acc part between the two snps in the back
         if ~isempty(idx_back) 
-            mdist_back = acc.start(min(idx_back));  % if there is an acc part, set the range of mdist to the start of the accessory part
+            mdist_back = exclRegion.start(min(idx_back));  % if there is an acc part, set the range of mdist to the start of the accessory part
         end    
-    idx_front = find(start(i) > acc.edge(:,1) & mdist_front < acc.edge(:,1)); % see if there is an acc part between the two snps in the front
+    idx_front = find(start(i) > exclRegion.edge(:,1) & mdist_front < exclRegion.edge(:,1)); % see if there is an acc part between the two snps in the front
         if ~isempty(idx_front) 
-            mdist_front = acc.edge(max(idx_front)); % if there is an acc part, set the range of mdist to the end of the accessory part
+            mdist_front = exclRegion.edge(max(idx_front)); % if there is an acc part, set the range of mdist to the end of the accessory part
         end  
     mdist = (mdist_back - 1) - (mdist_front + 1) + 1;
     Mdist{m}(i,1) = mdist;
@@ -446,10 +475,7 @@ end
 % Identity = 1 - (# mlSNPs) / Adist
 ident{m} = 1 - C{m}(3,:)' ./ Adist{m}(:,1);
  
-% Calculate the percentage of genome replaced 
-% for Cdist (minimum distance)
-transfer_min = sum(Cdist{m}(:,1)) / recipsize * 100 ;
-% for Adist (average distance)
+% Calculate the percentage of genome replaced for Adist 
 transfer(m) = sum(Adist{m}(:,1)) / recipsize * 100 ;
 
 % Tidy up
@@ -472,5 +498,4 @@ if saveCNPSummary == "ON"
 end
 
 % Tidy up; comment out if you like to have a closer look at variables
-clear acc_mask clustermask i 
-
+clear excl_mask clusterPos i 
