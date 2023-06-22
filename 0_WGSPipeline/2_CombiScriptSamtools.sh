@@ -46,11 +46,11 @@ cd $samFold
 # # ./samtools mpileup -e 10 -t AD -F 0.00001 -h 80 -L 10000 -o 20 -f $myDictPath/$dict.fasta -uv $myDataPath/$IDout"_sort.bam" > $myDataPath/$IDout".vcf"
 # otherwise use the following:
 cd $bcfFold
-./bcftools mpileup -e 10 -F 0.00001 -h 80 -L 10000 -o 20 -a FORMAT/AD -d 8000 -f $myDictPath/$dict.fasta $myDataPath/$IDout"_sort.bam" > $myDataPath/$IDout"_bcfmp_bcf.vcf"
+./bcftools mpileup -e 10 -F 0.00001 -h 80 -L 10000 -o 20 -a FORMAT/AD -d 8000 -f $myDictPath/$dict.fasta $myDataPath/$IDout"_sort.bam" > $myDataPath/$IDout"_bcf.vcf"
 
 # Variant calling - Here, only variants are called arr given as an output.
 cd $bcfFold
-./bcftools call -vc $myDataPath/$IDout"We .vcf" > $myDataPath/$IDout"_bcfcall.vcf"
+./bcftools call -vc $myDataPath/$IDout"_bcf.vcf" > $myDataPath/$IDout"_bcfcall.vcf"
 
 # Obtain the coverage at every position on the reference genome.
 module unload gnu/4.4.7
