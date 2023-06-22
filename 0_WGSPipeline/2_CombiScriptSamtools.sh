@@ -11,23 +11,23 @@
 i=$SLURM_ARRAY_TASK_ID
 
 #Define input and output paths.
-myDataTrim  = "path to trimmed data"
-myDictPath  = "path to refernce dictionary"
-myDataPath  = "path to save output"
+myDataTrim="path to trimmed data"
+myDictPath="path to refernce dictionary"
+myDataPath="path to save output"
 
 #Define folders where software is installed  
-bwaFold = "path to bwa-0.7.17" 
-samFold = "path to samtools-1.16.1"
-bcfFold = "path to bcftools-1.16" 
-bedFold = "path to bedtools2/bin" 
+bwaFold="path to bwa-0.7.17" 
+samFold="path to samtools-1.16.1"
+bcfFold="path to bcftools-1.16" 
+bedFold="path to bedtools2/bin" 
 
 #Define variables 
-dict = "name of dictionary" 
+dict="name of dictionary" 
 
 # Define the name of data file or retrieve the name for every run i. Automatically define a name for the output files.
 #ID="Wns1020"
-ID    = $(ls -1 $myDataRaw | grep "Wns" | grep "20_1.fastq.gz" | sed -n ''$i'p'| cut -d"_" -f1)
-IDout = $ID"_2Ref" 
+ID=$(ls -1 $myDataRaw | grep "Wns" | grep "20_1.fastq.gz" | sed -n ''$i'p'| cut -d"_" -f1)
+IDout=$ID"_2Ref" 
 
 # From here on, no further changes are required.
 
