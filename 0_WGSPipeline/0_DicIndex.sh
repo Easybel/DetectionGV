@@ -22,7 +22,7 @@ cd $bwaFold
 module unload openjdk/1.8.0_202
 module load openjdk/1.8.0_60
 cd $picardFold
-java -Xms1g -Xmx3g -jar picard.jar CreateSequenceDictionary R=$myDictPath/$dict.fasta O=$myDictPath/$dict.dict
+java -Xms1g -Xmx3g -jar picard.jar CreateSequenceDictionary -R $myDictPath/$dict.fasta -O $myDictPath/$dict.dict
 
 cd $samFold
 ./samtools faidx $myDictPath/$dict.fasta
