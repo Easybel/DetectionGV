@@ -2,8 +2,9 @@
 %
 %%%%%%%%%%%%%%%%   CNP2genes created by MonaIsa  %%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  What this script does: It converts cluster information to genenames,
-%  counts how often genes are hit and does multipleHitStatistics for them
+%  What this script does: 
+%     -- detects for all genomic replacements, detected as clusters, which genes were affected by this.
+%     -- counts how often genes are hit and does Multi-Hit Statistics for them
 %
 %%%%%%%%%%%%%%
 %  Input: - Cluster information: either CNPSummary, deldup or a txt file
@@ -11,8 +12,8 @@
 %         - dataset: where in SNPSummary or deldup are the data of
 %         interest?
 %         - savepath: where are the data saved?
-%       !!! You will want to exclude accessory genome genes (aka genes that are (partially) hit by acc. genome regions)
-%         - Input: AccMM2Genes_Hits.mat
+%         - for the Multi-Hit Statistics the accessory and mutimapper genes are excluded, therefore we need
+%           - Input: AccMM2Genes_Hits.mat
 %
 %        Additional input:
 %             - you can load a txt file with a lsit of BSU names of genes that
