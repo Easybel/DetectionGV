@@ -10,8 +10,11 @@ In this repository, bioinformatic scripts are collected in the following folders
  
 - **dictionaries_Bacillus**
   - All extra files that are needed across the different project folders for Bacillus hybrids are collected here. This includes:
-    - masterlists for different donors
-    - accessory genome listst for different donors
-    - annotation files: these are initially downloaded as **.gff3** files and then converted to **bed.mat / .bed.txt** with the script [2_GeneralScripts/Convert_gff3_to_bed.m](https://github.com/Easybel/DetectionGV/blob/main/2_GeneralScripts/Convert_gff3_to_bed.m)
+    - ml: masterlists for different donors
+    - acc: accessory genome listst for different donors
+    - other files:
+      - reference files (**.fasta** )
+      - annotation files: these are initially downloaded as **.gff3** files and then converted to **bed.mat / .bed.txt** with the script [2_GeneralScripts/Convert_gff3_to_bed.m](https://github.com/Easybel/DetectionGV/blob/main/2_GeneralScripts/Convert_gff3_to_bed.m)
+      - recipient specific list of multimapping regions ([Bs166NCe_mm.txt](https://github.com/Easybel/DetectionGV/blob/main/dictionaries/Bs166NCe_mm.txt)), SNP artifacts ([Bs166NCe_mm.txt](https://github.com/Easybel/DetectionGV/blob/main/dictionaries/Bs166NCe_ArteSNPs.vcf)), and coverage artifacts [Bs166NCe_ArteCov.txt](https://github.com/Easybel/DetectionGV/blob/main/dictionaries/Bs166NCe_ArteCov.txt) that have to be excluded in the following analysis
   
 The original version of all scripts, as cited in the PhD thesis of Isabel Rathmann, is preserved on branch [PhDThesis_Rathmann2023](https://github.com/Easybel/DetectionGV/tree/PhDThesis_Rathmann2023).
