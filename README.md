@@ -1,8 +1,9 @@
 # DetectionGV
 
-![alt text](Pipeline_WGS.png)
-
 In this repository, bioinformatic scripts are collected in the following folders:
+
+<img src="https://github.com/Easybel/DetectionGV/blob/main/Pipeline_WGS.png" width="600">
+
 
 - **[0_WGSPipeline](https://github.com/Easybel/DetectionGV/tree/main/0_WGSPipeline)**  
   - This contains all scripts needed to analyze  whole genome, raw sequencing reads of bacterial transformation hybrids 
