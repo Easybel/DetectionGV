@@ -28,7 +28,7 @@ dict="name of donor dictionary"
 
 # Define the name of data file or retrieve the name for every run i. Automatically define a name for the output files.
 #ID="Wns1020"
-ID=$(ls -1 $myDataRaw | grep "Wns" | grep "20_1.fastq.gz" | sed -n ''$i'p'| cut -d"_" -f1)
+ID=$(ls -1 $myDataTrim | grep "20_1P.fastq.gz" | sed -n ''$i'p'| cut -d"_" -f1)
 IDout=$ID"_2Donor" 
 
 # From here on, no further changes are required.
