@@ -19,3 +19,9 @@
       - bwa and samtools, see above
       - BCFtools https://github.com/samtools/bcftools
       - Bedtools 2 https://github.com/arq5x/bedtools2
+   
+- **3_CombiScript_Insertions.sh**
+  - The trimmed reads are aligned to the donor reference (hard) and the coverage at each position is evaluated.
+  - Programs used in the script
+      - bwa and samtools, see above
+      - Bedtools 2 https://github.com/arq5x/bedtools2
