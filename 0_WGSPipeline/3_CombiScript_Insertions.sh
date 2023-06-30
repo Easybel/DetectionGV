@@ -20,7 +20,6 @@ myDataPath="path to save output"
 #Define folders where software is installed  
 bwaFold="path to bwa-0.7.17" 
 samFold="path to samtools-1.16.1"
-bcfFold="path to bcftools-1.16" 
 bedFold="path to bedtools2/bin" 
 
 #Define variables 
