@@ -21,8 +21,8 @@ The pipeline roughly contains the following steps:
  
 - **[dictionaries_Bacillus](https://github.com/Easybel/DetectionGV/tree/main/dictionaries_Bacillus)**
   - All extra files that are needed across the different project folders for Bacillus hybrids are collected here. This includes:
-    - ml: masterlists for different donors (this list can be created with 
-    - acc: accessory genome listst for different donors (this list can be created with 
+    - masterlists for different donors (in **[ml](https://github.com/Easybel/DetectionGV/tree/main/dictionaries_Bacillus/ml)** -- these lists are created with [A0b_MasterListFiltering.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A0b_MasterListFiltering.m)).
+    - accessory genome lists for different donors (in **[acc](https://github.com/Easybel/DetectionGV/tree/main/dictionaries_Bacillus/acc)** -- these lists are created with [https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A0b_MasterListFiltering.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A0c_AccessoryGenome.m)).
     - other files:
       - reference files (**.fasta** ) -- usually downloaded, e.g. from NCBI
       - annotation files: these are initially downloaded as **.gff3** files and then converted to **bed.mat / .bed.txt** with the script [2_GeneralScripts/Convert_gff3_to_bed.m](https://github.com/Easybel/DetectionGV/blob/main/2_GeneralScripts/Convert_gff3_to_bed.m)
