@@ -9,7 +9,12 @@ The pipeline roughly contains the following steps:
 - **[0_WGSPipeline](https://github.com/Easybel/DetectionGV/tree/main/0_WGSPipeline)**  
   - This contains all scripts needed to analyze  whole genome, raw sequencing reads of bacterial transformation hybrids 
 - **[1_Detection](https://github.com/Easybel/DetectionGV/tree/main/1_Detection)**
-  - With the outputs from [0_WGSPipeline](https://github.com/Easybel/DetectionGV/tree/main/0_WGSPipeline), different genetic variations in the hybrid's genomes can be detected.
+  - With the outputs from [0_WGSPipeline](https://github.com/Easybel/DetectionGV/tree/main/0_WGSPipeline), different genomic variations in the hybrid's genomes can be detected. This includes
+    - Orthologous recombinations/ indels/ denovo SNPs ->  [A1_SNP2CNP.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A1_SNP2CNP.m)
+    - deletions/ duplications -> [A3_Cov2DelDup.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A3_Cov2DelDup.m)
+    - insertions -> [A4_Cov2Ins.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A4_Cov2Ins.m)
+  - for all genomic variations, the genes that were affected can be detected with [A2_Lists2Genes.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A2_Lists2Genes.m)
+    
 - **[2_GeneralScripts](https://github.com/Easybel/DetectionGV/tree/main/2_GeneralScripts)**
   - Here, general scripts are collected that are needed to sort and convert annotations as well as find gene orthologues with blast.
  
