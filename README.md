@@ -1,18 +1,19 @@
 # DetectionGV
 
-In this repository, bioinformatic scripts are collected in the following folders:
+In this repository, all scripts needed to analyse whole genome sequencing data of transformation hybrids are collected. First, raw sequencing reads are processed and then different genomic variations are detected.
+The pipeline roughly contains the following steps:
 
 <img src="https://github.com/Easybel/DetectionGV/blob/main/Pipeline_WGS.png" width="600">
 
 
 - **[0_WGSPipeline](https://github.com/Easybel/DetectionGV/tree/main/0_WGSPipeline)**  
   - This contains all scripts needed to analyze  whole genome, raw sequencing reads of bacterial transformation hybrids 
-- **1_Detection**
+- **[1_Detection](https://github.com/Easybel/DetectionGV/tree/main/1_Detection)**
   - With the outputs from [0_WGSPipeline](https://github.com/Easybel/DetectionGV/tree/main/0_WGSPipeline), different genetic variations in the hybrid's genomes can be detected.
-- **2_GeneralScripts**
+- **[2_GeneralScripts](https://github.com/Easybel/DetectionGV/tree/main/2_GeneralScripts)**
   - Here, general scripts are collected that are needed to sort and convert annotations as well as find gene orthologues with blast.
  
-- **dictionaries_Bacillus**
+- **[dictionaries_Bacillus](https://github.com/Easybel/DetectionGV/tree/main/dictionaries_Bacillus)**
   - All extra files that are needed across the different project folders for Bacillus hybrids are collected here. This includes:
     - ml: masterlists for different donors
     - acc: accessory genome listst for different donors
