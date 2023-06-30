@@ -3,7 +3,7 @@
 In this repository, all scripts needed to analyse whole genome sequencing data of transformation hybrids are collected. First, raw sequencing reads are processed and then different genomic variations are detected.
 The pipeline roughly contains the following steps:
 
-<img src="https://github.com/Easybel/DetectionGV/blob/main/Pipeline_WGS.png" width="600">
+<img src="https://github.com/Easybel/DetectionGV/blob/main/Pipeline_WGS.png" width="800">
 
 
 - **[0_WGSPipeline](https://github.com/Easybel/DetectionGV/tree/main/0_WGSPipeline)**  
