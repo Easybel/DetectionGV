@@ -13,15 +13,15 @@ The pipeline is visualized in the following scheme:
 - **[1_Detection](https://github.com/Easybel/DetectionGV/tree/main/1_Detection)**
   - With the outputs from [0_WGSPipeline](https://github.com/Easybel/DetectionGV/tree/main/0_WGSPipeline), different genomic variations in the hybrid's genomes can be detected. This includes
     - Orthologous replacememts, denovo SNPs & indels :arrow_right:  [A1_SNP2CNP.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A1_SNP2CNP.m)
-    - deletions/ duplications --> [A3_Cov2DelDup.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A3_Cov2DelDup.m)
-    - insertions --> [A4_Cov2Ins.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A4_Cov2Ins.m)
+    - deletions/ duplications :arrow_right: [A3_Cov2DelDup.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A3_Cov2DelDup.m)
+    - insertions :arrow_right: [A4_Cov2Ins.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A4_Cov2Ins.m)
   - for all genomic variations, the genes that were affected can be detected with [A2_Lists2Genes.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A2_Lists2Genes.m)
     
 - **[2_GeneralScripts](https://github.com/Easybel/DetectionGV/tree/main/2_GeneralScripts)**
   - Here, general scripts are collected that are needed to sort and convert annotations as well as find gene orthologues with blast.
  
 - **[dictionaries_Bacillus](https://github.com/Easybel/DetectionGV/tree/main/dictionaries_Bacillus)**
-  - All extra files that are needed across the different project folders for Bacillus hybrids are collected here. This includes:
+  - All extra files that are needed across the different project folders for _Bacillus_ hybrids are collected here. This includes:
     - masterlists for different donors (in **[ml](https://github.com/Easybel/DetectionGV/tree/main/dictionaries_Bacillus/ml)** -- these lists are created with [A0b_MasterListFiltering.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A0b_MasterListFiltering.m)).
     - accessory genome lists for different donors (in **[acc](https://github.com/Easybel/DetectionGV/tree/main/dictionaries_Bacillus/acc)** -- these lists are created with [A0c_AccessoryGenome.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A0c_AccessoryGenome.m)).
     - other files:
