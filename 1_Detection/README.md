@@ -27,7 +27,7 @@ All scripts are implemented in MATLAB. The order of the scripts indicates the or
 - Here, we detect the accessory genome parts of the recipient reference with respect to the donr (or vice versa). The accessory regions found here are excluded from the replacement detection performed with [**A1_SNP2CNP.m** ](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A1_SNP2CNP.m). As an input, this script takes the **.vcf** output from the **mpileup** function run in [2_CombiScriptSamtools.sh](https://github.com/Easybel/DetectionGV/blob/main/0_WGSPipeline/2_CombiScriptSamtools.sh). For all positions that have a read depth below the threshold set in [**A0_VariantFiltering.m**](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A0_VariantFiltering.m), the script identifies consecutive regions longer than 150 bp. These are collected as accessory regions.
 
 [**A0d_Multimapper.m**](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A0d_Multimapper.m)
-- This script allows us to find the regions on a genome to which multimapping reads align.
+- Prior to using this script, the genome **fasta** of the genome reference is blasted to itself and the hit table is obtained.
 
 [**A1_SNP2CNP.m**](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A1_SNP2CNP.m)
 - With the filtered variant list and the masterlist, we detect the replacements of donor segments into the recipient. Here, we exclude accessory genome and multimapping regions.
