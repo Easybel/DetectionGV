@@ -4,6 +4,8 @@ First, the masterlist for the recipient reference with respect to the donor is d
 Next, different kinds of genomic variations are detected from the alignments of hybrid sequencing reads to the reference genomes.
 &nbsp;
 
+&nbsp;
+
 <kbd>
 <img src="https://github.com/Easybel/DetectionGV/blob/main/1_Detection/Detection_Recombination.png" width="900">
 </kbd>
