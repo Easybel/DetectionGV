@@ -1,4 +1,4 @@
-# About the scripts in this folder:
+# The scripts in this folder:
 
 - **0_DicIndex.sh**
   - The dictionaries needed for the alignment steps are indexed and sorted.
