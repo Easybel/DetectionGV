@@ -1,4 +1,4 @@
-# DetectionGV
+# Introduction
 
 In this repository, all scripts needed to analyse whole genome sequencing data of transformation hybrids are collected. First, raw sequencing reads are processed in the "Raw reads analysis pipeline" and then different genomic variations are detected in "Further analysis".  
 The pipeline is visualized in the following scheme:  
@@ -6,7 +6,7 @@ The pipeline is visualized in the following scheme:
   
 <img src="https://github.com/Easybel/DetectionGV/blob/main/Pipeline_WGS.png" width="900">
 
-
+# Overview of the folders and the contained scripts
 - **[0_WGSPipeline](https://github.com/Easybel/DetectionGV/tree/main/0_WGSPipeline)**  
   - This contains all bioinformatic scripts needed to analyse whole genome, raw sequencing reads of bacterial transformation hybrids.
     
@@ -29,5 +29,9 @@ The pipeline is visualized in the following scheme:
       - annotation files: initially downloaded as **.gff3** files and then converted to **bed.mat / .bed.txt** with the script [2_GeneralScripts/Convert_gff3_to_bed.m](https://github.com/Easybel/DetectionGV/blob/main/2_GeneralScripts/Convert_gff3_to_bed.m)
       - recipient specific list of multimapping regions ([Bs166NCe_mm.txt](https://github.com/Easybel/DetectionGV/blob/main/dictionaries/Bs166NCe_mm.txt) created with [A0d_Multimapper.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A0d_Multimapper.m))
       -  SNP artefacts ([Bs166NCe_mm.txt](https://github.com/Easybel/DetectionGV/blob/main/dictionaries/Bs166NCe_ArteSNPs.vcf)), coverage artefacts for deletions/ duplications [Bs166NCe_ArteCov.txt](https://github.com/Easybel/DetectionGV/blob/main/dictionaries/Bs166NCe_ArteCov.txt) and insertions have to be excluded in the following analysis. These lists are created by running the according scripts that detect these genomic variations with mapping data between the recipient and its own reference. 
-  
+
+# How to cite our work:
+
+
+
 The original version of all scripts, as cited in the PhD thesis of Isabel Rathmann, is preserved on branch [PhDThesis_Rathmann2023](https://github.com/Easybel/DetectionGV/tree/PhDThesis_Rathmann2023).
