@@ -8,7 +8,12 @@ Next, different kinds of genomic variations are detected from the alignments of 
 
 <kbd>
 <img src="https://github.com/Easybel/DetectionGV/blob/main/1_Detection/Detection_Recombination.png" width="900">
-</kbd>
+</kbd>  
+
+&nbsp;
+
+&nbsp;
+
 All scripts are implemented in MATLAB. The order of the scripts indicates the order in which scripts are usually run.
 
 [**A0_VariantFiltering.m**](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A0_VariantFiltering.m)
