@@ -1,6 +1,4 @@
-
----------------------------------------------------
-## Overview of the scripts 
+## The scripts in this folder:
 In this folder, the scripts are provided with which different genetic variants can be detected. All scripts are implemented in MATLAB. The numbers of the scripts indicate the order in which they should be run. Here, we give a brief overview.
 
 **A0_VariantFiltering**
