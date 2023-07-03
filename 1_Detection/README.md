@@ -1,7 +1,7 @@
 ## The scripts in this folder:
 In this folder, the scripts are provided with which different genomic variations in transformation hybrids can be detected.
 
-<img src="https://github.com/Easybel/DetectionGV/blob/main/Pipeline_WGS.png" width="900">
+<img src="https://github.com/Easybel/DetectionGV/blob/main/Detection_Recombination.png" width="900">
 
 All scripts are implemented in MATLAB. The order of the scripts indicates the order in which scripts are usually run.
 
