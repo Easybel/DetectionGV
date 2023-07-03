@@ -31,7 +31,9 @@ The pipeline is visualized in the following scheme:
       -  SNP artefacts ([Bs166NCe_mm.txt](https://github.com/Easybel/DetectionGV/blob/main/dictionaries/Bs166NCe_ArteSNPs.vcf)), coverage artefacts for deletions/ duplications [Bs166NCe_ArteCov.txt](https://github.com/Easybel/DetectionGV/blob/main/dictionaries/Bs166NCe_ArteCov.txt) and insertions have to be excluded in the following analysis. These lists are created by running the according scripts that detect these genomic variations with mapping data between the recipient and its own reference. 
 
 # How to cite our work:
+The bioinformatic scripts and basic pipeline for the detection of genomic variations were first developed for the work published here:
 
+Jeffrey J. Power, Fernanda Pinheiro, Simone Pompei, Viera Kovacova, Melih Yüksel, Isabel Rathmann, Mona Förster, Michael Lässig, and Berenike Maier. Adaptive evolution of hybrid bacteria by horizontal gene transfer. _Proceedings of the National Academy of Sciences_, 2021, [ DOI: 10.1073/pnas.2007873118 ](https://www.pnas.org/doi/full/10.1073/pnas.2007873118)
 
 
 The original version of all scripts, as cited in the PhD thesis of Isabel Rathmann, is preserved on branch [PhDThesis_Rathmann2023](https://github.com/Easybel/DetectionGV/tree/PhDThesis_Rathmann2023).
