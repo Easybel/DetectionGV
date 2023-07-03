@@ -1,7 +1,7 @@
 ## The scripts in this folder:
 In this folder, the scripts are provided with which different genomic variations can be detected. All scripts are implemented in MATLAB. The order of the scripts indicates the order in which scripts are usually run.
 
-**A0_VariantFiltering.m**
+[**A0_VariantFiltering.m**](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A0_VariantFiltering.m )
 - This script takes the list of called variants **_bcftools.vcf** and filters the entries. Indels can be excluded and the filter acts upon phred-scaled SNP quality, read depth and the ambiguity of SNPs (exclude SNPs that make up a too small amount of all aligned reads at a position). Additionally, the Look-Ahead filter can be used, that only passes SNPs that are also present in the same sample sequenced at a later timepoint. 
 
 **A0b_MasterListFiltering.m**
