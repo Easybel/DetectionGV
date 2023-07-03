@@ -33,7 +33,14 @@ The pipeline is visualized in the following scheme:
 # How to cite our work:
 The bioinformatic scripts and basic pipeline for the detection of genomic variations were first developed for the work published here:
 
-Jeffrey J. Power, Fernanda Pinheiro, Simone Pompei, Viera Kovacova, Melih Yüksel, Isabel Rathmann, Mona Förster, Michael Lässig, and Berenike Maier. Adaptive evolution of hybrid bacteria by horizontal gene transfer. _Proceedings of the National Academy of Sciences_, 2021, [ DOI: 10.1073/pnas.2007873118 ](https://www.pnas.org/doi/full/10.1073/pnas.2007873118)
+Jeffrey J. Power, Fernanda Pinheiro, Simone Pompei, Viera Kovacova, Melih Yüksel, Isabel Rathmann, Mona Förster, Michael Lässig, and Berenike Maier. **Adaptive evolution of hybrid bacteria by horizontal gene transfer.** _Proceedings of the National Academy of Sciences_, 2021, [DOI:10.1073/pnas.2007873118 ](https://www.pnas.org/doi/full/10.1073/pnas.2007873118)
 
+In the form presented here, the scripts were published in:
+
+Isabel Rathmann, Mona Förster, Melih Yüksel, Lucas Horst, Gabriela Petrungaro, Tobias Bollenbach, and Berenike Maier. **Distribution of fitness effects of cross-species transformation reveals potential for fast adaptive evolution.** _The ISME Journal_, 2022, [https://doi.org/10.1038/s41396-023-01440-x](https://www.nature.com/articles/s41396-023-01440-x))
+
+and extensively used and improved for: 
+
+XXX BioXriv
 
 The original version of all scripts, as cited in the PhD thesis of Isabel Rathmann, is preserved on branch [PhDThesis_Rathmann2023](https://github.com/Easybel/DetectionGV/tree/PhDThesis_Rathmann2023).
