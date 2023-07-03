@@ -1,6 +1,6 @@
 # DetectionGV
 
-In this repository, all scripts needed to analyse whole genome sequencing data of transformation hybrids are collected. First, raw sequencing reads are processed and then different genomic variations are detected.
+In this repository, all scripts needed to analyse whole genome sequencing data of transformation hybrids are collected. First, raw sequencing reads are processed in the "Raw reads analysis pipeline" and then different genomic variations are detected in "Further Analysis".
 The pipeline roughly contains the following steps:
 
 <img src="https://github.com/Easybel/DetectionGV/blob/main/Pipeline_WGS.png" width="800">
