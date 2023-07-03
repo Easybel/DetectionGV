@@ -37,7 +37,7 @@ Jeffrey J. Power, Fernanda Pinheiro, Simone Pompei, Viera Kovacova, Melih Yükse
 
 - In the form presented here, the scripts were published in:
 
-Isabel Rathmann, Mona Förster, Melih Yüksel, Lucas Horst, Gabriela Petrungaro, Tobias Bollenbach, and Berenike Maier. **Distribution of fitness effects of cross-species transformation reveals potential for fast adaptive evolution.** _The ISME Journal_, 2022, [https://doi.org/10.1038/s41396-023-01440-x](https://www.nature.com/articles/s41396-023-01440-x))
+Isabel Rathmann, Mona Förster, Melih Yüksel, Lucas Horst, Gabriela Petrungaro, Tobias Bollenbach, and Berenike Maier. **Distribution of fitness effects of cross-species transformation reveals potential for fast adaptive evolution.** _The ISME Journal_, 2022, [https://doi.org/10.1038/s41396-023-01440-x](https://www.nature.com/articles/s41396-023-01440-x)
 
 - and extensively used and improved for: 
 
