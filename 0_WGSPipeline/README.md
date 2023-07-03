@@ -3,7 +3,7 @@
 - **0_DicIndex.sh**
   - The dictionaries needed for the alignment steps are indexed and sorted.
   - Programs used in the script
-      - BWA https://github.com/lh3/bwa
+      - bwa https://github.com/lh3/bwa
       - samfold from https://github.com/samtools/samtools
       - Picard https://github.com/broadinstitute/picard (requires Java)
 
@@ -23,5 +23,4 @@
 - **3_CombiScript_Insertions.sh**
   - The trimmed reads are aligned to the donor reference (hard) and the coverage at each position is evaluated.
   - Programs used in the script
-      - bwa and samtools, see above
-      - Bedtools 2 https://github.com/arq5x/bedtools2
+      - bwa, samtools and Bedtools 2, see above
