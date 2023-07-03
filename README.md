@@ -4,7 +4,7 @@ In this repository, all scripts needed to analyse whole genome sequencing data o
 The pipeline is visualized in the following scheme:  
 
   
-<img src="https://github.com/Easybel/DetectionGV/blob/main/Pipeline_WGS.png" width="800">
+<img src="https://github.com/Easybel/DetectionGV/blob/main/CM_Pipeline_WGS.png" width="800">
 
 
 - **[0_WGSPipeline](https://github.com/Easybel/DetectionGV/tree/main/0_WGSPipeline)**  
