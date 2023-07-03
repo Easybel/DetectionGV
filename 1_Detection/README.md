@@ -2,9 +2,10 @@
 In this folder, the scripts are provided with which different genomic variations can be detected. All scripts are implemented in MATLAB. The order of the scripts indicates the order in which scripts are usually run.
 
 **A0_VariantFiltering.m**
-- This script takes the list of called variants **_bcftools.vcf** and filters the entries. Indels can be excluded and the filter acts upon SNP quality, read depth and . Indels can be excluded . This script is also used to filter the masterlist, which contains all SNPs detected between a recipient and donor species.
+- This script takes the list of called variants **_bcftools.vcf** and filters the entries. Indels can be excluded and the filter acts upon phred-scaled SNP quality, read depth and the ambiguity of SNPs (exclude SNPs that make up a too small amount of all aligned reads at a position). Additionally, the Look-Ahead filter can be used, that only passes SNPs that are also present in the same sample sequenced at a later timepoint. 
 
 **A0b_MasterListFiltering.m**
+- The script is very similar to **A0_VariantFiltering.m** and is run on the donor sequencing reads aligned to the recipient used for the hybrid organisms. It is expected to be run with the same filter paramters as used for the variant filtering of the hybrid strains. It gives a special masterlist **.mat** output that can be used for the **A1_SNP2CNP.m** script. 
 
 **A0c_AccessoryGenome.m**
 - Here, we detect the accessory genome parts of one genome compared to a second genome. In these regions, no replacements can be detected. 
