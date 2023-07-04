@@ -28,7 +28,9 @@ The pipeline is visualized in the following scheme:
       - reference files (**.fasta** ), usually downloaded, e.g. from NCBI
       - annotation files: initially downloaded as **.gff3** files and then converted to **bed.mat / .bed.txt** with the script [2_GeneralScripts/Convert_gff3_to_bed.m](https://github.com/Easybel/DetectionGV/blob/main/2_GeneralScripts/Convert_gff3_to_bed.m)
       - recipient specific list of multimapping regions ([Bs166NCe_mm.txt](https://github.com/Easybel/DetectionGV/blob/main/dictionaries/Bs166NCe_mm.txt) created with [A0d_Multimapper.m](https://github.com/Easybel/DetectionGV/blob/main/1_Detection/A0d_Multimapper.m))
-      -  SNP artefacts ([Bs166NCe_mm.txt](https://github.com/Easybel/DetectionGV/blob/main/dictionaries/Bs166NCe_ArteSNPs.vcf)), coverage artefacts for deletions/ duplications [Bs166NCe_ArteCov.txt](https://github.com/Easybel/DetectionGV/blob/main/dictionaries/Bs166NCe_ArteCov.txt) and insertions have to be excluded in the following analysis. These lists are created by running the according scripts that detect these genomic variations with mapping data between the recipient and its own reference. 
+      -  SNP artefacts ([Bs166NCe_mm.txt](https://github.com/Easybel/DetectionGV/blob/main/dictionaries/Bs166NCe_ArteSNPs.vcf)), coverage artefacts for deletions/ duplications [Bs166NCe_ArteCov.txt](https://github.com/Easybel/DetectionGV/blob/main/dictionaries/Bs166NCe_ArteCov.txt) and insertions have to be excluded in the following analysis. These lists are created by running the according scripts that detect these genomic variations with mapping data between the recipient and its own reference.
+     
+- **[ToyData](https://github.com/Easybel/DetectionGV/tree/main/ToyData)**
 
 # How to cite our work:
 - The bioinformatic scripts and basic pipeline for the detection of genomic variations were first developed for the work published here:
