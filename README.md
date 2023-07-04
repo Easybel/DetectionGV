@@ -43,6 +43,8 @@ Isabel Rathmann, Mona Förster, Melih Yüksel, Lucas Horst, Gabriela Petrungaro,
 
 - and extensively used and improved for: 
 
-Mona Förster, Isabel Rathmann, Melih Yüksel, Jeffrey J. Power, and Berenike Maier. **Genome-wide transformation reveals extensive exchange across closely related Bacillus species.** _BioXriv_, 2023, ??? 
+Mona Förster, Isabel Rathmann, Melih Yüksel, Jeffrey J. Power, and Berenike Maier. **Genome-wide transformation reveals extensive exchange across closely related Bacillus species.** _BioXriv_, 2023, [DOI: 10.1101/2023.07.03.547483](https://biorxiv.org/cgi/content/short/2023.07.03.547483v1).
+
+
 
 The original version of all scripts, as cited in the PhD thesis of Isabel Rathmann, is preserved on branch [PhDThesis_Rathmann2023](https://github.com/Easybel/DetectionGV/tree/PhDThesis_Rathmann2023).
