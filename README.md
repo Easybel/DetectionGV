@@ -31,7 +31,8 @@ The pipeline is visualized in the following scheme:
       -  SNP artefacts ([Bs166NCe_mm.txt](https://github.com/Easybel/DetectionGV/blob/main/dictionaries/Bs166NCe_ArteSNPs.vcf)), coverage artefacts for deletions/ duplications [Bs166NCe_ArteCov.txt](https://github.com/Easybel/DetectionGV/blob/main/dictionaries/Bs166NCe_ArteCov.txt) and insertions have to be excluded in the following analysis. These lists are created by running the according scripts that detect these genomic variations with mapping data between the recipient and its own reference.
      
 - **[ToyData](https://github.com/Easybel/DetectionGV/tree/main/ToyData)**
-
+  - In this folder, we provide a toy data set of a hybrid sample (recipient: _Bacillus subtilis_, donor: _Bacillus spizizenii_). The files are the outputs from the analysis of raw reads from folder [0_WGSPipeline](https://github.com/Easybel/DetectionGV/tree/main/0_WGSPipeline) and can be used to test the scripts in the detection scripts in [1_Detection](https://github.com/Easybel/DetectionGV/tree/main/1_Detection).
+      
 # How to cite our work:
 - The bioinformatic scripts and basic pipeline for the detection of genomic variations were first developed for the work published here:
 
