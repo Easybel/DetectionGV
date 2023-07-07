@@ -59,7 +59,7 @@ IndataType = "Adist";       % from CNPSummary/ CNPISummary: "Adist" or "denovo" 
 % Here give the data file
 % either: CNPSummary.mat, Output_deldup.mat or txt document
 
-IndataPath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/";
+IndataPath = "/DetectionGV/dictionaries_Bacillus/";
 Indata     = "Bs166NCe_mm.txt";
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -95,11 +95,11 @@ end
 
 
 % now we need the information, where which gene is in your organism
-recipbed   = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/Bs166NCe_June2021.bed.mat";
+recipbed   = "//DetectionGV/dictionaries_Bacillus/Bs166NCe_June2021.bed.mat";
 
 % Do you want to only search for subset of genes given in the bed?
 SearchInSpecGenes = "OFF";
-specGenes         = "/home/isabel/Documents/Doktorarbeit_Mai2022/P1_EvolExp_CLASSIC_Bacillus/0_dictionaries/NCIB3610_wildstrain/Mapped_Bs166_2_NCIB3610/Bs166_2_NCIB3610_HitOutput_NonSnyBSU.txt";
+specGenes         = "....txt";
 
 %%%%%%%     Load variables   %%%%%%%%%%%%
 % which accmm genes to exclude? exclude_thr sets to which frac a gene must
@@ -111,7 +111,7 @@ exclude_thr = 1.1;
 recipsize = 4215607;
 
 % the plots and hotcolds are saved here
-savepath = "/home/isabel/Documents/sciebo/DFE_fromSciebo/2022_withSelection/DNAseq/";
+savepath = "../OUT";
 
 % Do you want to save the HotColdGenes data?
 saveHotColdData = "OFF";
