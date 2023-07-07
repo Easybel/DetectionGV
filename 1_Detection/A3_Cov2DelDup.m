@@ -8,23 +8,25 @@
 % given coverage data
 %
 %    input:
-% -- is the coverage of the samples of interest; the artefacts to be excluded
-% -- and the parameters of choice
+% -- the coverage of the samples of interest
+% -- the deletions & duplication artefacts can be excluded
+% -- the detection parameters
 %
 %    output:
-% -- is a structure deletion and duplication - together saved as deldup
-% -- this script offers to look at overview plots that can help you to
+% -- data structure with deletions and duplications -> saved as deldup
+% -- this script can optionally show overview plots that help you to
 %    decide if the positions you found are reasonable
 
 clear all; close all
 %% give the paths/names and set the parameters
 % %%%%%%%%%  load the coverage %%%%%%%%%%%%%%%%
 
-covpath   = "../IN";
+covpath   = "../DetectionGV/ToyData/";
 covsample =  "Wns17" + ["10" "20.5"];
 covsuffix = "_2Bs166_coverage.txt";
 
 expName = "Wns";
+reference = "Bs166";  % reference the reads were mapped to
 
 % variables 
 cutoff = 5;       % this is the factor c: cutoff= mu-c*sigma
@@ -39,9 +41,9 @@ clrmap = jet(numel(covsample));
 refchr=4215607; 
 
 % SET PREFERENCES!
-exclude     = "ON";
-saveOut     = "ON";
-plotSamples = "ON";
+excArtefacts = "ON";  % exclude the deletion/ duplication artefacts
+saveOut      = "ON";  % save the del/dup data to file 
+plotSamples  = "ON";  % plot individual samples for control
 
 %%
 % load artefact regions and exclude them
@@ -64,8 +66,6 @@ mm.InS = imp{1};
 mm.InE = imp{2};
 end
 
-
-
 %% preparations: 
 % load the data
 for i=1:numel(covsample)
@@ -80,12 +80,13 @@ for i=1:numel(covsample)
     
     %plot the histograms as an overview
     figure(1)
-    h(i)=histogram(in(i).cov,'FaceColor',clrmap(i,:),'EdgeColor',clrmap(i,:),'FaceAlpha',0.2,'BinWidth',5)
+    h(i)=histogram(in(i).cov,'FaceColor',clrmap(i,:),'EdgeColor',clrmap(i,:),'FaceAlpha',0.2,'BinWidth',5);
     hold on
     xlim([0 1000]) 
 end
 legend(h,covsample)
 title('Overview of the coverage distributions')
+xlabel('mapping reads')
 
 % make an artefacts mask for del and dup
 artedel_mask = ones(refchr,1); artedup_mask = ones(refchr,1);
@@ -125,9 +126,10 @@ for i=1:numel(covsample)
     deletion(m).sldw = sldw;
     deletion(m).delpara = del_para; 
     deletion(m).minconsdel = min_consdel;
+
     % create the deletion mask and find deletions
     delmask0 = movmean(in(i).cov,sldw) <= deletion(i).thresh; % 1:deletions
-    if exclude == "ON"
+    if excArtefacts == "ON"
        delmask = double(delmask0) .* artedel_mask;  
     else 
         delmask = delmask0;
@@ -201,7 +203,7 @@ for i=1:numel(covsample)
     duplication(m).minconsdup = min_consdup;
     % now create the duplication mask and find the dups
     dupmask0 = movmean(in(i).cov,sldw) >= duplication(i).thresh; % 1: duplications
-    if  exclude == "ON"
+    if  excArtefacts == "ON"
        dupmask = double(dupmask0) .* artedup_mask;     
     else 
         dupmask = dupmask0;
@@ -289,7 +291,7 @@ delallstart = [deletion(:).start];
 dupallstart = [duplication(:).start]; 
 
 % plot the HotSpot plot
-figure(33)
+figure(10)
 rows = 5;
 pstart = 1;
 pedge = refchr;
@@ -323,40 +325,49 @@ if plotSamples == "ON"
     pedge = refchr;
     plength = pedge-pstart+1;
     for s=1:numel([deletion(:).numD])
-        fig = [];
+         fig = [];
         figure('Units','centimeters','position',[20 20 16.97 24],'paperpositionmode','auto');
         for i=1:rows
             fig = gcf;
             figure(fig)
             subplot(rows,1,i)
             region = [pstart+(i-1)*(plength/rows) pstart+(plength/rows)*i];
+
             % plot the coverage
-            plot(in(s).pos,movmean(in(s).cov,deletion(s).sldw),'Color',[0.8 0.8 0.8])
+            p1 = plot(in(s).pos,movmean(in(s).cov,deletion(s).sldw),'Color',[0.8 0.8 0.8]);
             hold on
+
             %plot the deletions
             maskde = (deletion(s).start >= region(1) & deletion(s).edge <= region(2));
             masknumde = sum(maskde);
-            scatter(deletion(s).start(maskde),deletion(s).thresh*ones(masknumde,1),'d','filled','MarkerEdgeColor','m',...
-                'MarkerFaceColor','m')
-            scatter(deletion(s).edge(maskde),deletion(s).thresh*ones(masknumde,1),'d','filled','MarkerEdgeColor','b',...
-                'MarkerFaceColor','b')
+            s1 = scatter(deletion(s).start(maskde),deletion(s).thresh*ones(masknumde,1),'d','filled','MarkerEdgeColor','m',...
+                'MarkerFaceColor','m');
+            s2 = scatter(deletion(s).edge(maskde),deletion(s).thresh*ones(masknumde,1),'d','filled','MarkerEdgeColor','b',...
+                'MarkerFaceColor','b');
+
             %plot the duplications
             mask = (duplication(s).start >= region(1) & duplication(s).edge <= region(2));
             masknum = sum(mask);
-            scatter(duplication(s).start(mask),duplication(s).thresh*ones(masknum,1),'d','filled','MarkerEdgeColor','m',...
-                'MarkerFaceColor','m')
-            scatter(duplication(s).edge(mask),duplication(s).thresh*ones(masknum,1),'d','filled','MarkerEdgeColor','b',...
-                'MarkerFaceColor','b')
+            s3 = scatter(duplication(s).start(mask),duplication(s).thresh*ones(masknum,1),'d','filled','MarkerEdgeColor','m',...
+                'MarkerFaceColor','m');
+            s4 = scatter(duplication(s).edge(mask),duplication(s).thresh*ones(masknum,1),'d','filled','MarkerEdgeColor','b',...
+                'MarkerFaceColor','b');
+
             %plot the thresholds and mean
-            plot([region(1) region(2)],[deletion(s).mu deletion(s).mu],'k')
+            p2 = plot([region(1) region(2)],[deletion(s).mu deletion(s).mu],'k');
             hold on
-            plot([region(1) region(2)],[deletion(s).thresh deletion(s).thresh],'k--')
-            plot([region(1) region(2)],[duplication(s).thresh duplication(s).thresh],'k--')
+            p3 = plot([region(1) region(2)],[deletion(s).thresh deletion(s).thresh],'k--');
+            p4 = plot([region(1) region(2)],[duplication(s).thresh duplication(s).thresh],'k-.');
             xlim([pstart+(i-1)*(plength/rows) pstart+(plength/rows)*i])
             ylim([0 1500])
             clear mask masknum maskde masksumde
         end
         subplot(rows,1,1)
-        title([covsample(s) 'mapped to 168'])
+        title([covsample(s) + " mapped to " + reference])
+        subplot(rows,1,rows)
+        legend([p1,s1,s2,p2,p3,p4],{'moving mean of coverage','del/dup start','del/dup end','cov mean','del threshold','dup threshold'},...
+            'Location','bestoutside')
+        xlabel('position on reference')
+        ylabel('coverage')
     end
 end
