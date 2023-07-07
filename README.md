@@ -6,7 +6,7 @@ The pipeline is visualized in the following scheme:
   
 <img src="https://github.com/Easybel/DetectionGV/blob/main/Pipeline_WGS.png" width="900">
 
-# Overview of the folders and the contained scripts
+# Overview of folders and scripts
 - **[0_WGSPipeline](https://github.com/Easybel/DetectionGV/tree/main/0_WGSPipeline)**  
   - This contains all bioinformatic scripts needed to analyse whole genome, raw sequencing reads of bacterial transformation hybrids.
     
