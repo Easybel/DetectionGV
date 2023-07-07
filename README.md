@@ -32,6 +32,7 @@ The pipeline is visualized in the following scheme:
      
 - **[ToyData](https://github.com/Easybel/DetectionGV/tree/main/ToyData)**
   - In this folder, we provide a toy data set of a hybrid sample (recipient: _Bacillus subtilis_, donor: _Bacillus spizizenii_). The files are the outputs from the analysis of raw reads from folder [0_WGSPipeline](https://github.com/Easybel/DetectionGV/tree/main/0_WGSPipeline) and can be used to test the scripts in the detection scripts in [1_Detection](https://github.com/Easybel/DetectionGV/tree/main/1_Detection).
+  - If you want raw reads to test the scripts in [0_WGSPipeline](https://github.com/Easybel/DetectionGV/tree/main/0_WGSPipeline), then check out our publication at [DOI: 10.1038/s41396-023-01440-x](https://www.nature.com/articles/s41396-023-01440-x). Here, the sequencing data is made available.
       
 # How to cite our work:
 - The bioinformatic scripts and basic pipeline for the detection of genomic variations were first developed for the work published here:
