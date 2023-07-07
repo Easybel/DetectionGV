@@ -53,7 +53,7 @@ if strcmp(donor, "Bval")
     masterlist = pathLists + "ml/" + "mlBval2Bs166NCe_v1.txt";
     accgenome  = pathLists + "acc/" + "accBval_2NCe.txt";
 elseif strcmp(donor, "Bspiz")
-    % W23 donor
+    % Bspiz donor
     masterlist = pathLists + "ml/" + "mlW232Bs166NCe_v1.txt";
     accgenome  = pathLists + "acc/" +"accW23_2NCe.txt";
 elseif strcmp(donor, "Batro")
