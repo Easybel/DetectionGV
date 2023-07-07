@@ -60,7 +60,7 @@ IndataType = "Adist";       % from CNPSummary/ CNPISummary: "Adist" or "denovo" 
 % either: CNPSummary.mat, Output_deldup.mat or txt document
 
 IndataPath = "/DetectionGV/dictionaries_Bacillus/";
-Indata     = "Bs166NCe_mm.txt";
+Indata     = "CNPSummary_Wns17.mat";
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%   Additional Files  %%%%%%
@@ -68,7 +68,7 @@ Indata     = "Bs166NCe_mm.txt";
 
 donor = "Bval"; % "Bspiz", "Bval", "Batro"
 
-pathLists = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/";
+pathLists = "/DetectionGV/dictionaries_Bacillus/";
 if strcmp(donor, "Bval")
     % Bval donor
     masterlist = pathLists + "ml/" + "mlBval2Bs166NCe_v1.txt";
@@ -95,7 +95,7 @@ end
 
 
 % now we need the information, where which gene is in your organism
-recipbed   = "//DetectionGV/dictionaries_Bacillus/Bs166NCe_June2021.bed.mat";
+recipbed   = "/DetectionGV/dictionaries_Bacillus/Bs166NCe_June2021.bed.mat";
 
 % Do you want to only search for subset of genes given in the bed?
 SearchInSpecGenes = "OFF";
