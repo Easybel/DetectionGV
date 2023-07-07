@@ -84,7 +84,7 @@ elseif strcmp(donor, "Batro")
 elseif strcmp(donor, "Geo")
     % Geo donor
     masterlist = pathLists + "ml/" + "mlGeo2Bs166NCe_v1.txt";
-    accgenome  = pathLists + "acc/" +"Batro_AccMM2Genes.mat"; %
+    accgenome  = pathLists + "acc/" +"Geo_AccMM2Genes.mat"; %
 else
     error("Something went wrong with your donor declaration.. Is your donor really %s?", donor);
 end
@@ -98,10 +98,11 @@ SearchInSpecGenes = "OFF";
 specGenes         = "....txt";
 
 %%%%%%%     Load variables   %%%%%%%%%%%%
-% which accmm genes to exclude? exclude_thr sets to which frac a gene must
-% be accmm to be excluded; exclude_thr sets the lower limit
-% % % if exclude_thr = 1, then only genes, that are complete accmm are exc.
-% % % if exclude_thr = 1.1, then no gene is excluded
+% which accmm genes to exclude in the multi hit statistic? 
+% % exclude_thr sets lower boundary to fraction that gene must contain multimapping or
+% %             accessory regions to be excluded;
+% % % if exclude_thr = 1, then genes that are complete accmm are excluded
+% % % if exclude_thr = 1.1, no gene is excluded
 exclude_thr = 1.1;
 
 recipsize = 4215607;
