@@ -10,7 +10,7 @@
 % input: 
 % -- SNPSummary/ MutSummary (which is output from A0_VariantFiltering.m)
 % -- masterlist containing SNPwise differences between recipient and donor
-%    (obtained with A0_VariantFiltering.m)
+%    (obtained with A0b_MasterListFiltering.m)
 % -- accessory genome of recipient with respect to donor 
 %    (obtained with A0c_AccessoryGenome.m)
 % -- list with multimapper regions (obtained with A0d_Multimapper.m)
@@ -45,14 +45,14 @@ clearvars
                     %                      %
 
 % select the used donor species for masterlist and accessory genome
-donor = "W23"; % "W23", "Bval", "Batro", "Geo", "Bmoj"
+donor = "Bspiz"; % "Bval", "Batro", "Geo", "Bmoj"
 
 pathLists = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/";
 if strcmp(donor, "Bval")
     % Bval donor
     masterlist = pathLists + "ml/" + "mlBval2Bs166NCe_v1.txt";
     accgenome  = pathLists + "acc/" + "accBval_2NCe.txt";
-elseif strcmp(donor, "W23")
+elseif strcmp(donor, "Bspiz")
     % W23 donor
     masterlist = pathLists + "ml/" + "mlW232Bs166NCe_v1.txt";
     accgenome  = pathLists + "acc/" +"accW23_2NCe.txt";
