@@ -24,13 +24,13 @@ clearvars
              % %                                  % %
 
 % path to unfiltered variant lists              
-Inpath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper_BigData/Hybrids2Bs166/bcfcalls/";    
+Inpath = "../IN";    
 filesuffix = "_bcfcall.vcf";
 
 % Do you want to save the SNPSummary to the savepath ?
 saveSNPSummary = true;
 % save output in
-Outpath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/DNASeq/2_MutSummaries/";
+Outpath = "../OUT";
 
 % % % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- % % %
 
@@ -50,7 +50,7 @@ if strcmp(sampleType, "standard")
 % % % be fill in the sampleNames string array, leave the rest untouched - % % % 
 % % % --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- % % %
     
-    sampleNames =  ["Wns0120" "Wns0420" "Wns0520" "Wns0620" "Wns0720" "Wns0820"];
+    sampleNames =  ["Wns1720.5"];
 
     % Fixed variables
     corrCycles{1} = [0];
@@ -75,19 +75,14 @@ elseif strcmp(sampleType, "LAFilter")
 % % % The algorithm will run over all sampleNo and all cycles individually % % %
 
     % % evolExp == samplePrefix
-    evolExp = "Vns0";      
+    evolExp = "Wns";      
 
     % Define sample number sampleNo{x} and the corresponding cycles corrCycles{x}:
-    sampleNo{1} = string([9]);
+    sampleNo{1} = string([17]);
     corrCycles{1} = [10 20.5];
-    
-    % you can add more sets 
-%     sampleNo{2} = ["02"];
-%     corrCycles{2} = [10 20.5];
-% 
 
     sampleSuffix = "";  % You can specify a sampleSuffix if necessary, default:
-                        % sampleSuffix = "";
+                        % sampleSuffix = "_bcfcall.vcf";
     
 else
     error("Please, clarify you sampleType!");
