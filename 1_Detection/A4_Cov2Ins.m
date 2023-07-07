@@ -14,57 +14,55 @@
 clearvars
 close all
 
-%%
-%Specify your donor species
-donor = "W23"; % "W23", "Bval", "Batro", "Geo"
+%% specify paths and paramters
 
-covPath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper_BigData/Hybrids2Donors/coverage/";
-replic = "Wns0" + string([3:8]);
-covFiles = replic + "20";
-covSuffix = "_2W23Donor_coverage.txt";
+% load the coverage data
+covPath = "../DetectionGV/ToyData/";
+sample = "Wns17";
+covFiles = sample + ["20.5"];
+covSuffix = "_2Bspiz_coverage.txt";
 
 % Insertion parameters
 minCovSigma = 1.5; % minCov = meanCov - minCovSigma*stdCov (default: 1.5) 
-minLen = 40; % Insertions with a length of 50 bp are able to be detected! --
-            % x Needs to be bigger than 20 to avoid artefacts when W23 is
-            % donor (default: 40)
+minLen = 40;       % Insertions with a length of 50 bp are able to be detected! --
+                   % x Needs to be bigger than 20 to avoid artefacts when W23 is
+                   % donor (default: 40)
 
 % Do you wanna save the insertions.mat - file?
 saveInsertion = "ON"; 
-saveName = ""; % Leave "" - empty if you like it just to be 'date'_insertions.mat
+saveName = ""; % Leave empty with "" if you like it just to be 'date'_insertions.mat
 
 %Color specification
-if length(covFiles)==1; cmp = [199 6 73]/255; else; cmp = jet(length(covFiles)); end
+if length(covFiles)==1; cmp = [199 6 73]/255; 
+else; cmp = jet(length(covFiles)); 
+end
 
-if donor == "W23"
-    accPath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/acc/";
-    accList = "accBs166_2W23.txt";
+%Specify your donor species
+donor = "Bspiz"; % "Bval", "Batro", "Geo"
+
+dictPath = "../DetectionGV/dictionaries_Bacillus/";
+if donor == "Bspiz"
+    accList = dictPath + "acc/accBs166_2W23.txt";
     donorsize = 4027680;
     artefacts = "";
-    
 elseif donor == "Bval"
-    accPath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/acc/";
-    accList = "accBs166_2Bval.txt";
+    accList = dictPath + "acc/accBs166_2Bval.txt";
     donorsize = 4286362;
-    artefacts = "H:\0_PhD\Bioinformatics\Dictionaries\artefacts\B1662Bval_arteIns.txt";
-    
+    artefacts = dictPath + "B1662Bval_arteIns.txt";    
 elseif donor == "Batro"
-    accPath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/acc/";
-    accList = "accBs166_2Batro.txt";
+    accList = dictPath + "acc/accBs166_2Batro.txt";
     donorsize = 4168266;
-    artefacts = "H:\0_PhD\Bioinformatics\Dictionaries\artefacts\B1662Batro_arteIns.txt";
-    
+    artefacts = dictPath + "B1662Batro_arteIns.txt";
 elseif donor == "Geo"
-    accPath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/acc/";
-    accList = "accBs166_2Geo.txt"; 
+    accList = dictPath + "acc/accBs166_2Geo.txt"; 
     donorsize = 3873116;
-    artefacts = "H:\0_PhD\Bioinformatics\Dictionaries\artefacts\B1662Geo_arteIns.txt";
+    artefacts = dictPath + "B1662Geo_arteIns.txt";
 else
     error("Please, specify your donor! -- Is it really " + donor + "?");
 end
 
 %% Load accRegions
-fid = fopen(accPath + accList);
+fid = fopen(accList);
     imp = textscan(fid,'%f %f %f','delimiter','\t');
     fclose(fid);
     accStart=imp{1}; accEnde=imp{2}; accLen = imp{3};
@@ -171,6 +169,8 @@ for m = 1 : size(covFiles,2)
     end
     
 end
+
+%%
 figure(1);
 legend([accPlot covinAcc minCovPlot insPlot], ["Accessory Genome", "Coverage in acc regions", "minCov - Line", "Potential insertions"]);
 
