@@ -50,7 +50,7 @@ close all
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % different data inputs, choose one:
-IndataType = "txtListStartEnd";       % from CNPSummary/ CNPISummary: "Adist" or "denovo" or "SPI"
+IndataType = "Adist";       % from CNPSummary/ CNPISummary: "Adist" or "denovo" or "SPI"
                             % from CNPISummary: "indel"
                             % from Output_DelDup: "dup" or "del"
                             % from indelSummary: "indel"
@@ -59,31 +59,22 @@ IndataType = "txtListStartEnd";       % from CNPSummary/ CNPISummary: "Adist" or
 % Here give the data file
 % either: CNPSummary.mat, Output_deldup.mat or txt document
 
-%IndataPath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/DNASeq/";
-%Indata     = "20220630_Geons_CNPSummary";
 IndataPath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/";
 Indata     = "Bs166NCe_mm.txt";
 
-
-% If you hand a .mat, where are your replicates of interest?
-% If you want all samples, type []
-%dataset=  "Geons0" + ["120" "220" "320" "420" "520"];
-%dataset = "BAns0" + ["120" "220" "320" "420" "620" "720" "820"]; % 
-%dataset = "Vns0" + ["120" "220.5" "320" "420" "520.5" "620.5" "720.5" "820.5"]; % [1:5]
-%dataset =  ["Wns1120.5" "Wns1220.5" "Wns1420.5" "Wns1520.5" "Wns1620.5" "Wns1720.5" "Wns1820.5" "Wns1920.5"];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%   Additional Files  %%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-donor = "Bval"; % "W23", "Bval", "Batro"
+donor = "Bval"; % "Bspiz", "Bval", "Batro"
 
 pathLists = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/";
 if strcmp(donor, "Bval")
     % Bval donor
     masterlist = pathLists + "ml/" + "mlBval2Bs166NCe_v1.txt";
     accgenome  = pathLists + "acc/" + "Bval_AccMM2Genes.mat";
-elseif strcmp(donor, "W23")
-    % W23 donor
+elseif strcmp(donor, "Bspiz")
+    % Bspiz donor
     masterlist = pathLists + "ml/" + "mlW232Bs166NCe_v1.txt";
     accgenome  = pathLists + "acc/" +"W23_AccMM2Genes.mat";
 elseif strcmp(donor, "Batro")
