@@ -2,6 +2,7 @@
 %
 %%%%%%%%%%%%%%%%   Cov2DelDup created by Isabel  %%%%%%%%%%%%%%%%%%%%%%%%
 %
+% last update: July 7, 2023
 %
 % What this script does: It finds all the deletions and duplications for
 % given coverage data
@@ -17,27 +18,15 @@
 
 clear all; close all
 %% give the paths/names and set the parameters
-% ---------------------------load the coverage
+% %%%%%%%%%  load the coverage %%%%%%%%%%%%%%%%
 
-% covpath = "/home/isabel/sciebo/ResultsShared/DFE_HighThroughput/DNASeq_LibBmoj/";
-% covsample = "LibSCBmoj" + string(1:10);
-covpath   = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper_BigData/Hybrids2Bs166/coverage/";
-%covpath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper_BigData/Bs1662Donor/";
-%covsample = "Bs166";
-covsample =  "Geons0" + ["110" "210" "310" "410" "510" "610" "710" "810" "120" "220" "320" "420" "520"];
-%covsample = "BAns0" + ["110" "210" "310" "410" "610" "710" "810" "120" "220" "320" "420" "620" "720" "820"]; % 
-%covsample = "Vns0" + ["110" "210" "310" "410" "510" "610" "710" "810"...
-%    "120" "220.5" "320" "420" "520.5" "620.5" "720.5" "820.5"]; % [1:5]
-%covsample = "Geons" + ["0620.5" "0720.5" "0820.5"];
-covsuffix = "_2NCe_coverage.txt";
+covpath   = "../IN";
+covsample =  "Wns17" + ["10" "20.5"];
+covsuffix = "_2Bs166_coverage.txt";
 
-expName = "Geons";
-
-
-clrmap = jet(numel(covsample));
+expName = "Wns";
 
 % variables 
-refchr=4215607; 
 cutoff = 5;       % this is the factor c: cutoff= mu-c*sigma
 sldw = 30;        % sliding window that smooths the cov prior to analysis
 minL = 1;         % minimal length of detected segment
@@ -45,6 +34,9 @@ del_para = 0;     % this is the absolute value that del has to hit
 min_consdel = 10; % del_para has to be hit this number of consecutive times
 dup_para = 2; % this is the factor to the mean that duplication has to hit
 min_consdup = 10; % this is how often dub_para has to be hit consecutively
+
+clrmap = jet(numel(covsample));
+refchr=4215607; 
 
 % SET PREFERENCES!
 exclude     = "ON";
