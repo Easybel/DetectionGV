@@ -84,11 +84,7 @@ elseif strcmp(donor, "Batro")
 elseif strcmp(donor, "Geo")
     % Geo donor
     masterlist = pathLists + "ml/" + "mlGeo2Bs166NCe_v1.txt";
-    accgenome  = pathLists + "acc/" +"Batro_AccMM2Genes.mat";
-elseif strcmp(donor, "Bmoj")
-    % Bmoj donor
-    masterlist = pathLists + "ml/" + "mlBmoj2Bs166NCe_v1.txt";
-    accgenome  = "";
+    accgenome  = pathLists + "acc/" +"Batro_AccMM2Genes.mat"; %
 else
     error("Something went wrong with your donor declaration.. Is your donor really %s?", donor);
 end
