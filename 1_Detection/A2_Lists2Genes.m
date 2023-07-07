@@ -59,7 +59,7 @@ IndataType = "Adist";       % from CNPSummary/ CNPISummary: "Adist" or "denovo" 
 % Here give the data file
 % either: CNPSummary.mat, Output_deldup.mat or txt document
 
-IndataPath = "/DetectionGV/dictionaries_Bacillus/";
+IndataPath = "../IN";
 Indata     = "CNPSummary_Wns17.mat";
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
