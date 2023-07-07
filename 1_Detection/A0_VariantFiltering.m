@@ -14,7 +14,8 @@
 
 % input: "_bcfcall.vcf", usually an output of bcftools call from the 
 %         whole genome sequencing pipeline
-% output: formerly: SNPSummary or MutSummary (when indels are included)
+% output: -- the structure in Matlab is called SNPSummary 
+%         -- the file is saved automatically as SNPSummary or MutSummary (when indels are included)
 
 clearvars
 
