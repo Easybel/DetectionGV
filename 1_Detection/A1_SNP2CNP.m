@@ -47,7 +47,7 @@ clearvars
 % select the used donor species for masterlist and accessory genome
 donor = "Bspiz"; % "Bval", "Batro", "Geo", "Bmoj"
 
-pathLists = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/";
+pathLists = "/DetectionGV/dictionaries_Bacillus/";
 if strcmp(donor, "Bval")
     % Bval donor
     masterlist = pathLists + "ml/" + "mlBval2Bs166NCe_v1.txt";
@@ -90,14 +90,14 @@ SNPSource = "MutSummary";     % Where do your variant lists come from?
 samplenames = [];
 
 % Path of the SNPSummary/ies or IndvMutLists of the evolved strains:
-SNPPath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/DNASeq/2_MutSummaries/";
+SNPPath = "../IN";
 
 % Turn "ON" to save the CNPSummary !
 saveCNPSummary = "ON"; 
 
 if any(strcmp(SNPSource, ["SNPSummary", "MutSummary"]))
     % You can give more than {1} SNPSummary as input
-    SNPName{1} = "20230331_Wns_20-25_MutSummary.mat";
+    SNPName{1} = "XXX.mat";
 
 
 elseif strcmp(SNPSource, "IndvMutLists")
