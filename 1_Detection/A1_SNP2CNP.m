@@ -44,7 +44,7 @@ clearvars
                    % %    Define input    % %
                     %                      %
 
-
+% select the used donor species for masterlist and accessory genome
 donor = "W23"; % "W23", "Bval", "Batro", "Geo", "Bmoj"
 
 pathLists = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/";
@@ -82,8 +82,8 @@ recipsize = 4215607;
 % you have to pick one type and cant mix them!
 SNPSource = "MutSummary";     % Where do your variant lists come from? 
                               % "SNPSummary" (default)
-                              % "MutSummary" includes Indels 
-                              % "IndvMutLists" (is a .txt file)
+                              % "MutSummary" (includes Indels) 
+                              % "IndvMutLists" (old: is a .txt file)
                              
 % You just need to specify samplenames if you use "IndvMutLists"
 % otherwise leave empty to choose ALL:
