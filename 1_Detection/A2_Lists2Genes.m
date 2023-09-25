@@ -2,8 +2,9 @@
 %
 %%%%%%%%%%%%%%%%   CNP2genes created by MonaIsa  %%%%%%%%%%%%%%%%%%%%%%%%
 %
-%  What this script does: It converts cluster information to genenames,
-%  counts how often genes are hit and does multipleHitStatistics for them
+%  What this script does: 
+%     -- detects for all genomic replacements, detected as clusters, which genes were affected by this.
+%     -- counts how often genes are hit and does Multi-Hit Statistics for them
 %
 %%%%%%%%%%%%%%
 %  Input: - Cluster information: either CNPSummary, deldup or a txt file
@@ -11,8 +12,8 @@
 %         - dataset: where in SNPSummary or deldup are the data of
 %         interest?
 %         - savepath: where are the data saved?
-%       !!! You will want to exclude accessory genome genes (aka genes that are (partially) hit by acc. genome regions)
-%         - Input: AccMM2Genes_Hits.mat
+%         - for the Multi-Hit Statistics the accessory and mutimapper genes are excluded, therefore we need
+%           - Input: AccMM2Genes_Hits.mat
 %
 %        Additional input:
 %             - you can load a txt file with a lsit of BSU names of genes that
@@ -49,7 +50,7 @@ close all
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % different data inputs, choose one:
-IndataType = "txtListStartEnd";       % from CNPSummary/ CNPISummary: "Adist" or "denovo" or "SPI"
+IndataType = "Adist";       % from CNPSummary/ CNPISummary: "Adist" or "denovo" or "SPI"
                             % from CNPISummary: "indel"
                             % from Output_DelDup: "dup" or "del"
                             % from indelSummary: "indel"
@@ -58,31 +59,22 @@ IndataType = "txtListStartEnd";       % from CNPSummary/ CNPISummary: "Adist" or
 % Here give the data file
 % either: CNPSummary.mat, Output_deldup.mat or txt document
 
-%IndataPath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/DNASeq/";
-%Indata     = "20220630_Geons_CNPSummary";
-IndataPath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/";
-Indata     = "Bs166NCe_mm.txt";
+IndataPath = "../IN";
+Indata     = "CNPSummary_Wns17.mat";
 
-
-% If you hand a .mat, where are your replicates of interest?
-% If you want all samples, type []
-%dataset=  "Geons0" + ["120" "220" "320" "420" "520"];
-%dataset = "BAns0" + ["120" "220" "320" "420" "620" "720" "820"]; % 
-%dataset = "Vns0" + ["120" "220.5" "320" "420" "520.5" "620.5" "720.5" "820.5"]; % [1:5]
-%dataset =  ["Wns1120.5" "Wns1220.5" "Wns1420.5" "Wns1520.5" "Wns1620.5" "Wns1720.5" "Wns1820.5" "Wns1920.5"];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%   Additional Files  %%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-donor = "Bval"; % "W23", "Bval", "Batro"
+donor = "Bval"; % "Bspiz", "Bval", "Batro"
 
-pathLists = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/";
+pathLists = "/DetectionGV/dictionaries_Bacillus/";
 if strcmp(donor, "Bval")
     % Bval donor
     masterlist = pathLists + "ml/" + "mlBval2Bs166NCe_v1.txt";
     accgenome  = pathLists + "acc/" + "Bval_AccMM2Genes.mat";
-elseif strcmp(donor, "W23")
-    % W23 donor
+elseif strcmp(donor, "Bspiz")
+    % Bspiz donor
     masterlist = pathLists + "ml/" + "mlW232Bs166NCe_v1.txt";
     accgenome  = pathLists + "acc/" +"W23_AccMM2Genes.mat";
 elseif strcmp(donor, "Batro")
@@ -92,34 +84,31 @@ elseif strcmp(donor, "Batro")
 elseif strcmp(donor, "Geo")
     % Geo donor
     masterlist = pathLists + "ml/" + "mlGeo2Bs166NCe_v1.txt";
-    accgenome  = pathLists + "acc/" +"Batro_AccMM2Genes.mat";
-elseif strcmp(donor, "Bmoj")
-    % Bmoj donor
-    masterlist = pathLists + "ml/" + "mlBmoj2Bs166NCe_v1.txt";
-    accgenome  = "";
+    accgenome  = pathLists + "acc/" +"Geo_AccMM2Genes.mat"; %
 else
     error("Something went wrong with your donor declaration.. Is your donor really %s?", donor);
 end
 
 
 % now we need the information, where which gene is in your organism
-recipbed   = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/Bs166NCe_June2021.bed.mat";
+recipbed   = "/DetectionGV/dictionaries_Bacillus/Bs166NCe_June2021.bed.mat";
 
 % Do you want to only search for subset of genes given in the bed?
 SearchInSpecGenes = "OFF";
-specGenes         = "/home/isabel/Documents/Doktorarbeit_Mai2022/P1_EvolExp_CLASSIC_Bacillus/0_dictionaries/NCIB3610_wildstrain/Mapped_Bs166_2_NCIB3610/Bs166_2_NCIB3610_HitOutput_NonSnyBSU.txt";
+specGenes         = "....txt";
 
 %%%%%%%     Load variables   %%%%%%%%%%%%
-% which accmm genes to exclude? exclude_thr sets to which frac a gene must
-% be accmm to be excluded; exclude_thr sets the lower limit
-% % % if exclude_thr = 1, then only genes, that are complete accmm are exc.
-% % % if exclude_thr = 1.1, then no gene is excluded
+% which accmm genes to exclude in the multi hit statistic? 
+% % exclude_thr sets lower boundary to fraction that gene must contain multimapping or
+% %             accessory regions to be excluded;
+% % % if exclude_thr = 1, then genes that are complete accmm are excluded
+% % % if exclude_thr = 1.1, no gene is excluded
 exclude_thr = 1.1;
 
 recipsize = 4215607;
 
 % the plots and hotcolds are saved here
-savepath = "/home/isabel/Documents/sciebo/DFE_fromSciebo/2022_withSelection/DNAseq/";
+savepath = "../OUT";
 
 % Do you want to save the HotColdGenes data?
 saveHotColdData = "OFF";

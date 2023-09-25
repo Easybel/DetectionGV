@@ -10,7 +10,7 @@
 % input: 
 % -- SNPSummary/ MutSummary (which is output from A0_VariantFiltering.m)
 % -- masterlist containing SNPwise differences between recipient and donor
-%    (obtained with A0_VariantFiltering.m)
+%    (obtained with A0b_MasterListFiltering.m)
 % -- accessory genome of recipient with respect to donor 
 %    (obtained with A0c_AccessoryGenome.m)
 % -- list with multimapper regions (obtained with A0d_Multimapper.m)
@@ -44,16 +44,16 @@ clearvars
                    % %    Define input    % %
                     %                      %
 
+% select the used donor species for masterlist and accessory genome
+donor = "Bspiz"; % "Bval", "Batro", "Geo", "Bmoj"
 
-donor = "W23"; % "W23", "Bval", "Batro", "Geo", "Bmoj"
-
-pathLists = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/allLists/";
+pathLists = "/DetectionGV/dictionaries_Bacillus/";
 if strcmp(donor, "Bval")
     % Bval donor
     masterlist = pathLists + "ml/" + "mlBval2Bs166NCe_v1.txt";
     accgenome  = pathLists + "acc/" + "accBval_2NCe.txt";
-elseif strcmp(donor, "W23")
-    % W23 donor
+elseif strcmp(donor, "Bspiz")
+    % Bspiz donor
     masterlist = pathLists + "ml/" + "mlW232Bs166NCe_v1.txt";
     accgenome  = pathLists + "acc/" +"accW23_2NCe.txt";
 elseif strcmp(donor, "Batro")
@@ -82,22 +82,22 @@ recipsize = 4215607;
 % you have to pick one type and cant mix them!
 SNPSource = "MutSummary";     % Where do your variant lists come from? 
                               % "SNPSummary" (default)
-                              % "MutSummary" includes Indels 
-                              % "IndvMutLists" (is a .txt file)
+                              % "MutSummary" (includes Indels) 
+                              % "IndvMutLists" (old: is a .txt file)
                              
 % You just need to specify samplenames if you use "IndvMutLists"
 % otherwise leave empty to choose ALL:
 samplenames = [];
 
 % Path of the SNPSummary/ies or IndvMutLists of the evolved strains:
-SNPPath = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper/DNASeq/2_MutSummaries/";
+SNPPath = "../IN";
 
 % Turn "ON" to save the CNPSummary !
 saveCNPSummary = "ON"; 
 
 if any(strcmp(SNPSource, ["SNPSummary", "MutSummary"]))
     % You can give more than {1} SNPSummary as input
-    SNPName{1} = "20230331_Wns_20-25_MutSummary.mat";
+    SNPName{1} = "XXX.mat";
 
 
 elseif strcmp(SNPSource, "IndvMutLists")

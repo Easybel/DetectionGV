@@ -3,7 +3,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=16GB
 #SBATCH -N 1
-#SBATCH --account=AG-Maier
+#SBATCH --account=XX
 #SBATCH --mail-type=END 
 #SBATCH --mail-user name@uni-koeln.de 
 #SBATCH --time=12:00:00
@@ -11,23 +11,23 @@
 i=$SLURM_ARRAY_TASK_ID
 
 #Define input and output paths.
-myDataTrim  = "path to trimmed data"
-myDictPath  = "path to refernce dictionary"
-myDataPath  = "path to save output"
+myDataTrim="path to trimmed data"
+myDictPath="path to reference dictionary"
+myDataPath="path to save output"
 
 #Define folders where software is installed  
-bwaFold = "path to bwa-0.7.17" 
-samFold = "path to samtools-1.16.1"
-bcfFold = "path to bcftools-1.16" 
-bedFold = "path to bedtools2/bin" 
+bwaFold="path to bwa-0.7.17" 
+samFold="path to samtools-1.16.1"
+bcfFold="path to bcftools-1.16" 
+bedFold="path to bedtools2/bin" 
 
 #Define variables 
-dict = "name of dictionary" 
+dict="name of dictionary" 
 
 # Define the name of data file or retrieve the name for every run i. Automatically define a name for the output files.
 #ID="Wns1020"
-ID    = $(ls -1 $myDataRaw | grep "Wns" | grep "20_1.fastq.gz" | sed -n ''$i'p'| cut -d"_" -f1)
-IDout = $ID"_2Ref" 
+ID=$(ls -1 $myDataRaw | grep "Wns" | grep "20_1.fastq.gz" | sed -n ''$i'p'| cut -d"_" -f1)
+IDout=$ID"_2Ref" 
 
 # From here on, no further changes are required.
 
@@ -41,12 +41,16 @@ cd $samFold
 ./samtools index -b $myDataPath/$IDout"_sort.bam" > $myDataPath/$IDout"_sort.bam.bai"
 
 # Perform mpileup: Alignments are piled up for every position on the reference genome.
-cd $samFold
-./samtools mpileup -e 10 -t AD -F 0.00001 -h 80 -L 10000 -o 20 -f $myDictPath/$dict.fasta -uv $myDataPath/$IDout"_sort.bam" > $myDataPath/$IDout".vcf"
+# if you are using an old samtools version, then use the following command: 
+# # cd $samFold
+# # ./samtools mpileup -e 10 -t AD -F 0.00001 -h 80 -L 10000 -o 20 -f $myDictPath/$dict.fasta -uv $myDataPath/$IDout"_sort.bam" > $myDataPath/$IDout".vcf"
+# normally use the following:
+cd $bcfFold
+./bcftools mpileup -e 10 -F 0.00001 -h 80 -L 10000 -o 20 -a FORMAT/AD -d 8000 -f $myDictPath/$dict.fasta $myDataPath/$IDout"_sort.bam" > $myDataPath/$IDout"_bcf.vcf"
 
 # Variant calling - Here, only variants are called arr given as an output.
 cd $bcfFold
-./bcftools call -vc $myDataPath/$IDout"We .vcf" > $myDataPath/$IDout"_bcfcall.vcf"
+./bcftools call -vc $myDataPath/$IDout"_bcf.vcf" > $myDataPath/$IDout"_bcfcall.vcf"
 
 # Obtain the coverage at every position on the reference genome.
 module unload gnu/4.4.7

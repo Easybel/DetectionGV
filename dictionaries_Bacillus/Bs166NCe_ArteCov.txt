@@ -1,0 +1,5 @@
+# start end type reason
+169282 170476 del multimapper
+328158 328598 del amyE2comKind
+1116700 1117790 dup comK2kan_part1+2
+1503000 1505300 dup ?
