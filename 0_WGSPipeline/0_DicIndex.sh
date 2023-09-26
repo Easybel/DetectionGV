@@ -1,28 +1,19 @@
-#specify the software that is needed, the path to the dict and the name if the dict
-#Define input and output paths
-#In the myQCPath there should be a folder called FastQC_AfterTrimm, where the trimmed QC of the results will be put
+#!/bin/bash -l
 
-myDictPath="/home/irathman/scripts/scripts_git/test"
-
-
-#Define folders where software is installed
-
-bwaFold="/home/irathman/sw/bwa-0.7.17"
-samFold="/home/irathman/sw/samtools-1.8"
-picardFold="/home/irathman/sw"
-#GATKFold="/home/irathman/sw/GATK3.5"
-#bcfFold="/home/irathman/sw/bcftools-1.8"
-
-# here you map against: .fasta
-dict="BsubNC_000964wt"
+## use config.env to store your paths and filenames, they get read from there
+## MUST BE RUN WITH bash, sh DOES NOT WORK
+source $(dirname "$0")/config.env
 
 cd $bwaFold
-./bwa index $myDictPath/$dict.fasta
+./bwa index $myDictPath/$dict".fasta"
 
 module unload openjdk/1.8.0_202
 module load openjdk/1.8.0_60
 cd $picardFold
-java -Xms1g -Xmx3g -jar picard.jar CreateSequenceDictionary -R $myDictPath/$dict.fasta -O $myDictPath/$dict.dict
+java "-Xmx"$RAM_to_use_max"G" "-Xms"$RAM_to_use_min"G" -jar picard.jar CreateSequenceDictionary -R $myDictPath/$dict".fasta" -O $myDictPath/$dict".dict"
 
 cd $samFold
-./samtools faidx $myDictPath/$dict.fasta
+./samtools faidx $myDictPath/$dict".fasta"
+
+if $play_sound ; then echo $'\a'; fi # play finish sound
+exit 0

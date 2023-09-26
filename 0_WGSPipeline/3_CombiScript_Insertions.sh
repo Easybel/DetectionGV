@@ -10,43 +10,35 @@
 #SBATCH --array=1
 i=$SLURM_ARRAY_TASK_ID
 
-# Here, we map the reads hard to the donor reference to find insertions!
+## use config.env to store your paths and filenames, they get read from there
+## MUST BE RUN WITH bash, sh DOES NOT WORK
+source $(dirname "$0")/config.env
 
-#Define input and output paths.
-myDataTrim="path to trimmed data"
-myDictPath="path to donor reference dictionary"
-myDataPath="path to save output"
 
-#Define folders where software is installed  
-bwaFold="path to bwa-0.7.17" 
-samFold="path to samtools-1.16.1"
-bedFold="path to bedtools2/bin" 
+if [ -z "$ID_insert" ]; then # if override for $ID is not set, then crawl folder
+	ID=$(ls -1 $myDataTrim | grep "_1P.fastq.gz" | sed -n ''$i'p'| cut -d"_1P.fastq.gz" -f1); else ID=$ID_insert
+fi
 
-#Define variables 
-dict="name of donor dictionary" 
 
-# Define the name of data file or retrieve the name for every run i. Automatically define a name for the output files.
-#ID="Wns1020"
-ID=$(ls -1 $myDataTrim | grep "20_1P.fastq.gz" | sed -n ''$i'p'| cut -d"_" -f1)
-IDout=$ID"_2Donor" 
+### Here, we map the reads hard to the donor reference to find insertions!
 
-# From here on, no further changes are required.
 
 # Aligning the reads on the reference donor genome dictionary.
 # --- here, we map with "HARD" criteria that allow for little mapping inaccuracies
 cd $bwaFold
-./bwa mem $myDictPath/$dict".fasta" $myDataTrim/$ID"_1P.fastq.gz" $myDataTrim/$ID"_2P.fastq.gz" > $myDataPath/$IDout".sam"
+./bwa mem $myDictPath/$dict".fasta" $myDataTrim/$ID"_1P.fastq.gz" $myDataTrim/$ID"_2P.fastq.gz" > $myDataPath/$IDout_insert".sam"
 
 # Sorting of the aligned reads.
 cd $samFold
-./samtools sort $myDataPath/$IDout".sam" --threads 8 --reference $myDictPath/$dict.fasta -o $myDataPath/$IDout"_sort.bam"
-./samtools index -b $myDataPath/$IDout"_sort.bam" > $myDataPath/$IDout"_sort.bam.bai"
+./samtools sort $myDataPath/$IDout_insert".sam" --threads $threads_to_use -m $RAM_per_thread"M" --reference $myDictPath/$dict".fasta" -o $myDataPath/$IDout_insert"_sort.bam"
+./samtools index -b $myDataPath/$IDout_insert"_sort.bam" > $myDataPath/$IDout_insert"_sort.bam.bai"
 
 # Obtain the coverage at every position on the reference genome.
 module unload gnu/4.4.7
 module load gnu/5.1.0
 cd $bedFold
-./genomeCoverageBed -d -ibam $myDataPath/$IDout"_sort.bam" > $myDataPath/$IDout"_coverage.txt"
+./genomeCoverageBed -d -ibam $myDataPath/$IDout_insert"_sort.bam" > $myDataPath/$IDout_insert"_coverage.txt"
 
+if $play_sound ; then echo $'\a'; fi # play finish sound
 exit 0
 
