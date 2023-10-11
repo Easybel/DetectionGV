@@ -16,7 +16,7 @@
 %           - Input: AccMM2Genes_Hits.mat
 %
 %        Additional input:
-%             - you can load a txt file with a lsit of BSU names of genes that
+%             - you can load a txt file with a list of BSU names of genes that
 %               interest you and do the whole analysis just for these genes, otherwise
 %               it is done with all genes
 %
@@ -30,14 +30,14 @@
 %          GeneOutput: struct of every gene and how it was hit for every replicate
 %             -> struct('RepNo',[],'Cluster',[],'Type',[],'BSU',[],'Genename',[],'Frac',[],'IdentMl',[]);
 %
-%          RepSummary: summarizies information per replicate
+%          RepSummary: summarizes information per replicate
 %              -> struct('RepNo',[],'BSUHit',[],'GeneHit',[],'Replicate',[],'UniqBSU',[]);
 %
 %          MultiHitStat = struct('BSU',[],'Genename',[],'SumHit',[],'HitIndex',[]);
 %
 %
 % things to keep in mind:
-%    - the genes that belong to accessory genome have to be excluded from
+%    - the genes that belong to the accessory genome have to be excluded from
 %    further analysis. For this reason
 
 clear all; 
