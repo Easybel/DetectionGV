@@ -6,6 +6,12 @@ The pipeline is visualized in the following scheme:
   
 <img src="https://github.com/Easybel/DetectionGV/blob/main/Pipeline_WGS.png" width="900">
 
+A more detailed diagram can be found on LucidChart <https://lucid.app/documents/view/fa9f52da-edf4-4fb2-9b6c-d01996f4768e> or under [/documentation](/documentation)
+
+Preview:
+
+<img src="https://github.com/Easybel/DetectionGV/blob/main/documentation/DetectionGV_preview.png" width="900">
+
 # Overview of folders and scripts
 - **[0_WGSPipeline](https://github.com/Easybel/DetectionGV/tree/main/0_WGSPipeline)**  
   - This contains all bioinformatic scripts needed to analyse whole genome, raw sequencing reads of bacterial transformation hybrids.
