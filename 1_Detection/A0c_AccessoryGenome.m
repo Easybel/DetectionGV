@@ -9,8 +9,11 @@ clearvars
     path = "/home/isabel/Documents/Doktorarbeit_Mai2022/1_kleinesPaper_BigData/Donor2Bs166/"; 
     fileName   = "Bmoj_2NCe";
     fileSuffix = "_bcf.vcf";
+
+    % genome size of the .dict that .vcf was mapped to = number of letters in .fasta file
+    dictsize = 4215607; % B.sub Bs166
+    %dictsize = 4027680; % B.spiz W23 WT
     
-    recipsize = 4215607;
     maxDP = 50;     % Everything covered >= maxDP, is not included in the 
                     % accessory genome
     minLength = 0;    % Only regions longer minLength bps are considered
@@ -49,7 +52,7 @@ posDP = posAll(DPmask);
 % 2. Find positions with no entry in the bcf - no read mapped, position
 % with no cover --> posMissingMask == 1
 
-posRecip = [1 : recipsize];
+posRecip = [1 : dictsize];
 posMissingMask = ~ismember(posRecip, posAll);
 
 % include 1.: set all pos where DP < 50: posMissingMask == 1
@@ -82,5 +85,5 @@ fclose(accOutput);
 save(savePath + saveName + "_allBP.mat","accList")
 
 % 
-accessoryFraction = sum(totalLengthFilt)/recipsize;
+accessoryFraction = sum(totalLengthFilt)/dictsize;
 disp("For " + fileName + ", "+ num2str(accessoryFraction*100, "%0.1f")+ " % of the genome is accessory.");
