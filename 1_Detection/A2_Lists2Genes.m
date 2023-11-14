@@ -169,7 +169,9 @@ if ismember(IndataType,["Cdist","Adist","denovo","indel"])
     C      = {CNPSummary(:).C}';
     Adist  = {CNPSummary(:).Adist}';
     denovo = {CNPSummary(:).denovo}';
-    indel  = {CNPSummary(:).indel}';
+    if isfield(CNPSummary,'indel') % just if indel fields exists, otherwise ignore
+        indel  = {CNPSummary(:).indel}';
+    end
     rep    = {CNPSummary(:).Sample};
     ORI    = {CNPSummary(:).ORI_Crossing};
 
