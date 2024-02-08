@@ -11,14 +11,14 @@
 i=$SLURM_ARRAY_TASK_ID
 
 #Define input and output paths.
-myDataRaw ="path to raw data"
-myQCRaw   ="path to save quality control of raw data"
+myDataRaw="path to raw data"
+myQCRaw="path to save quality control of raw data"
 myDataTrim="path to save trimmed data"
-myQCTrim  ="path to save quality control of trimmed data"
+myQCTrim="path to save quality control of trimmed data"
 
 #Define folders where software is installed.
-FastQCFold = "path to FastQC"
-TrimmFold  = "path to Trimmomatic-0.36"
+FastQCFold="path to FastQC"
+TrimmFold="path to Trimmomatic-0.36"
 
 # Define the name of data file or retrieve the name for every run i.
 #ID="Wns1020"
